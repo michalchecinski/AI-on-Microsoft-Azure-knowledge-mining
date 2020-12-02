@@ -1,6 +1,6 @@
 # Semantive - Knowledge Mining with Cognitive Services
 
-### 1. Skład zespołu :person_with_blond_hair:
+### 1. Skład zespołu
 
 1. Michał Chęciński 
 2. Bartosz Strachowski
@@ -50,13 +50,12 @@
 
 ### 6. Stos technologiczny :hammer_and_wrench:
 
- 	Azure Cloud
+​	Azure Cloud
 
 ​	ASP.NET Core MVC
 
 ​	jQuery + Bootstrap 
 
-​	
 
 
 
