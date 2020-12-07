@@ -1,0 +1,177 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_TechnicalDocuIndexerWeb_name": {
+            "defaultValue": "TechnicalDocuIndexerWeb",
+            "type": "String"
+        },
+        "serverfarms_TechnicalDocuIndexerWeb20201207221426Pla_name": {
+            "defaultValue": "TechnicalDocuIndexerWeb20201207221426Pla",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "name": "[parameters('serverfarms_TechnicalDocuIndexerWeb20201207221426Pla_name')]",
+            "location": "South Central US",
+            "sku": {
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
+            },
+            "kind": "linux",
+            "properties": {
+                "perSiteScaling": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('sites_TechnicalDocuIndexerWeb_name')]",
+            "location": "South Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_TechnicalDocuIndexerWeb20201207221426Pla_name'))]"
+            ],
+            "tags": {
+                "hidden-related:/subscriptions/0caf907f-6588-4f39-8027-895017bfd9ed/resourceGroups/akscaling-devops/providers/Microsoft.Web/serverfarms/TechnicalDocuIndexerWeb20201207221426Pla": "empty"
+            },
+            "kind": "app,linux",
+            "identity": {
+                "principalId": "95ae344c-9028-4681-815f-7617e3bd56e2",
+                "tenantId": "3f36cba7-eba1-4073-b12d-ba24b0ead5a6",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "technicaldocuindexerweb.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "technicaldocuindexerweb.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_TechnicalDocuIndexerWeb20201207221426Pla_name'))]",
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "siteConfig": {},
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "hostNamesDisabled": false,
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), '/web')]",
+            "location": "South Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_TechnicalDocuIndexerWeb_name'))]"
+            ],
+            "tags": {
+                "hidden-related:/subscriptions/0caf907f-6588-4f39-8027-895017bfd9ed/resourceGroups/akscaling-devops/providers/Microsoft.Web/serverfarms/TechnicalDocuIndexerWeb20201207221426Pla": "empty"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v4.0",
+                "linuxFxVersion": "DOTNETCORE|3.1",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$TechnicalDocuIndexerWeb",
+                "azureStorageAccounts": {},
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": false,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": false
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "localMySqlEnabled": false,
+                "managedServiceIdentityId": 1047,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 1,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "ftpsState": "AllAllowed",
+                "reservedInstanceCount": 0
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2018-11-01",
+            "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), '/', parameters('sites_TechnicalDocuIndexerWeb_name'), '.azurewebsites.net')]",
+            "location": "South Central US",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_TechnicalDocuIndexerWeb_name'))]"
+            ],
+            "properties": {
+                "siteName": "TechnicalDocuIndexerWeb",
+                "hostNameType": "Verified"
+            }
+        }
+    ]
+}
