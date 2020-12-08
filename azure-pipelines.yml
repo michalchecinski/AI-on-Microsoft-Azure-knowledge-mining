@@ -36,6 +36,7 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
   - job: Test
+    dependsOn: Build
     displayName: Run Tests
     steps:
       - task: VSTest@2
@@ -43,6 +44,9 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
   - job: publishArmArtifact
+    dependsOn: 
+      - Build
+      - Test
     displayName: Publish ARM artifact
     steps:
       - publish: $(System.DefaultWorkingDirectory)/arm
