@@ -49,7 +49,7 @@ stages:
       - Test
     displayName: Publish ARM artifact
     steps:
-      - publish: $(System.DefaultWorkingDirectory)/arm
+      - publish: $(System.DefaultWorkingDirectory)/infrastructure
         artifact: ARMTemplate
 
 - stage: DeployAzureWebapp
