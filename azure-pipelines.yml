@@ -52,6 +52,7 @@ stages:
   displayName: Deploy Azure Web App Resource
   jobs:
     - deployment: deployment
+      environment: dev
       strategy:
         runOnce:
           deploy:
@@ -74,9 +75,10 @@ stages:
                     deploymentMode: 'Incremental'  
 
 - stage: DeploySolution
-  displayName: Deploy primary region
+  displayName: Deploy solution
   jobs:
-    - deployment: primary_region
+    - deployment: solution
+      environment: dev
       strategy:
         runOnce:
           deploy:
