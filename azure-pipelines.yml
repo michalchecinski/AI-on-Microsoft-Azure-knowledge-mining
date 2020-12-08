@@ -9,26 +9,84 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+
+resources:
+- repo: self
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+- stage: Build
+  displayName: Build Solution
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+      - task: NuGetToolInstaller@1
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(solution)'
+      - task: VSBuild@1
+        inputs:
+          solution: '$(solution)'
+          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+  - job: Test
+    displayName: Run Tests
+    steps:
+      - task: VSTest@2
+        inputs:
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+  - job: publishArmArtifact
+    displayName: Publish ARM artifact
+    steps:
+      - publish: $(System.DefaultWorkingDirectory)/arm
+        artifact: ARMTemplate
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+- stage: DeployAzureWebapp
+  displayName: Deploy Azure Web App Resource
+  jobs:
+    - deployment: deployment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+                - download: current
+                  artifact: ARMTemplate
+                - task: AzureResourceManagerTemplateDeployment@3
+                  name: 'Deploy_Azure_Webapp_for_Linux'
+                  displayName: 'Deploy Azure Webapp for Linux'
+                  inputs:
+                    deploymentScope: 'Resource Group'
+                    azureResourceManagerConnection: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
+                    subscriptionId: '0caf907f-6588-4f39-8027-895017bfd9ed'
+                    action: 'Create Or Update Resource Group'
+                    resourceGroupName: 'technicalDocuIndexer'
+                    location: 'West Europe'
+                    templateLocation: 'Linked artifact'
+                    csmFile: '$(Pipeline.Workspace)/ARMTemplate/template.json'
+                    csmParametersFile: '$(Pipeline.Workspace)/ARMTemplate/parameters.json'
+                    deploymentMode: 'Incremental'  
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- stage: DeploySolution
+  displayName: Deploy primary region
+  jobs:
+    - deployment: primary_region
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
+                  appType: 'webApp'
+                  appName: 'TechnicalDocuIndexerWeb'
+                  package: '$(Pipeline.Workspace)/**/*.zip'
+                  deploymentMethod: 'auto'
+                   
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
