@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverfarms_ASP_test_bfbf_name": {
-            "value": null
+            "value": "ASP-test-bfbf"
         },
         "sites_TechnicalDocuIndexerWeb_name": {
-            "value": null
+            "value": "TechnicalDocuIndexerWeb"
         },
         "components_TechnicalDocuIndexerWeb_name": {
-            "value": null
+            "value": "TechnicalDocuIndexerWeb"
         }
     }
 }

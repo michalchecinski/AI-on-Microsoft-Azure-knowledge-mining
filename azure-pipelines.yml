@@ -9,7 +9,6 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-
 resources:
 - repo: self
 
