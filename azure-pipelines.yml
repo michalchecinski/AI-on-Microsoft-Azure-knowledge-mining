@@ -34,6 +34,8 @@ stages:
           msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
+      - publish: $(Build.artifactStagingDirectory)
+        artifact: drop
   - job: Test
     dependsOn: Build
     displayName: Run Tests
@@ -64,8 +66,8 @@ stages:
                 - download: current
                   artifact: ARMTemplate
                 - task: AzureResourceManagerTemplateDeployment@3
-                  name: 'Deploy_Azure_Webapp_for_Linux'
-                  displayName: 'Deploy Azure Webapp for Linux'
+                  name: 'Deploy_Azure_Webapp_for_Windows'
+                  displayName: 'Deploy Azure Webapp for Windows'
                   inputs:
                     deploymentScope: 'Resource Group'
                     azureResourceManagerConnection: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
@@ -88,6 +90,8 @@ stages:
         runOnce:
           deploy:
             steps:
+              - download: current
+                artifact: drop
               - task: AzureWebApp@1
                 inputs:
                   azureSubscription: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
