@@ -28,7 +28,7 @@ namespace TechnicalDocuIndexer.Web.Controllers
         {
             List<FileModel> result = _handler.Upload(files, description);
 
-            TempData["Message"] = $"Successfully uploaded {result.Count} to memory.";
+            TempData["Message"] = $"Successfully uploaded {result.Count} file(s) to memory.";
             return RedirectToAction("Index");
         }
 
