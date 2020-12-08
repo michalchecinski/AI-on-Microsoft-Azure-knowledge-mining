@@ -1,8 +1,3 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
 - main
 
@@ -13,9 +8,13 @@ resources:
 - repo: self
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - group: tdi-base
+  - name: solution
+    value: '**/*.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
 
 stages:
 - stage: Build
@@ -70,10 +69,10 @@ stages:
                   displayName: 'Deploy Azure Webapp for Windows'
                   inputs:
                     deploymentScope: 'Resource Group'
-                    azureResourceManagerConnection: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
-                    subscriptionId: '0caf907f-6588-4f39-8027-895017bfd9ed'
+                    azureResourceManagerConnection: $(Azure.Resource.Manager.Connection)
+                    subscriptionId: $(Azure.Subscription.Id)
                     action: 'Create Or Update Resource Group'
-                    resourceGroupName: 'technicalDocuIndexer'
+                    resourceGroupName: $(Resource.Group.Name)
                     location: 'West Europe'
                     templateLocation: 'Linked artifact'
                     csmFile: '$(Pipeline.Workspace)/ARMTemplate/template.json'
@@ -95,7 +94,7 @@ stages:
               - task: AzureRmWebAppDeployment@4
                 inputs:
                   ConnectionType: 'AzureRM'
-                  azureSubscription: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
+                  azureSubscription: $(Azure.Resource.Manager.Connection)
                   appType: 'webApp'
                   WebAppName: 'TechnicalDocuIndexerWeb'
                   packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
