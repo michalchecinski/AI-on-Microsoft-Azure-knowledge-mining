@@ -97,7 +97,7 @@ stages:
                   azureSubscription: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
                   appType: 'webApp'
                   appName: 'TechnicalDocuIndexerWeb'
-                  package: '$(Pipeline.Workspace)/**/*.zip'
+                  package: '$(Pipeline.Workspace)/drop/TechnicalDocuIndexer.Web.zip'
                   deploymentMethod: 'auto'
                    
 
