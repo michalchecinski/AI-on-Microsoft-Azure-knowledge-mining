@@ -49,6 +49,7 @@ stages:
         artifact: ARMTemplate
 
 - stage: DeployAzureWebapp
+  dependsOn: Build
   displayName: Deploy Azure Web App Resource
   jobs:
     - deployment: deployment
@@ -75,6 +76,7 @@ stages:
                     deploymentMode: 'Incremental'  
 
 - stage: DeploySolution
+  dependsOn: DeployAzureWebapp
   displayName: Deploy solution
   jobs:
     - deployment: solution
