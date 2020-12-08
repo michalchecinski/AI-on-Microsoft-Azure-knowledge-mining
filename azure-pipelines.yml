@@ -92,12 +92,12 @@ stages:
             steps:
               - download: current
                 artifact: drop
-              - task: AzureWebApp@1
+              - task: AzureRmWebAppDeployment@4
                 inputs:
+                  ConnectionType: 'AzureRM'
                   azureSubscription: 'Azure dla studentów(0caf907f-6588-4f39-8027-895017bfd9ed)'
                   appType: 'webApp'
-                  appName: 'TechnicalDocuIndexerWeb'
-                  package: '$(Pipeline.Workspace)/drop/TechnicalDocuIndexer.Web.zip'
-                  deploymentMethod: 'auto'
+                  WebAppName: 'TechnicalDocuIndexerWeb'
+                  packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
                    
 
