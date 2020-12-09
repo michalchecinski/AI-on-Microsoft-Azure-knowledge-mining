@@ -1,34 +1,109 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
 trigger:
-- main
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - README.md
+    - images/*
 
 pool:
   vmImage: 'windows-latest'
 
+resources:
+- repo: self
+
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - group: tdi-base
+  - name: solution
+    value: '**/TechnicalDocuIndexer.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
 
-steps:
-- task: NuGetToolInstaller@1
+stages:
+- stage: Build
+  displayName: Build Solution
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+      - task: NuGetToolInstaller@1
+      - task: NuGetCommand@2
+        inputs:
+          restoreSolution: '$(solution)'
+      - task: VSBuild@1
+        inputs:
+          solution: '$(solution)'
+          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+      - publish: $(Build.artifactStagingDirectory)
+        artifact: drop
+  - job: Test
+    dependsOn: Build
+    displayName: Run Tests
+    steps:
+      - task: VSTest@2
+        inputs:
+          platform: '$(buildPlatform)'
+          configuration: '$(buildConfiguration)'
+  - job: publishArmArtifact
+    dependsOn: 
+      - Build
+      - Test
+    displayName: Publish ARM artifact
+    steps:
+      - publish: $(System.DefaultWorkingDirectory)/infrastructure
+        artifact: ARMTemplate
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+- stage: DeployAzureWebapp
+  dependsOn: Build
+  displayName: Deploy Azure Web App Resource
+  jobs:
+    - deployment: deployment
+      environment: dev
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+                - download: current
+                  artifact: ARMTemplate
+                - task: AzureResourceManagerTemplateDeployment@3
+                  name: 'Deploy_Azure_Webapp_for_Windows'
+                  displayName: 'Deploy Azure Webapp for Windows'
+                  inputs:
+                    deploymentScope: 'Resource Group'
+                    azureResourceManagerConnection: $(Azure.Resource.Manager.Connection)
+                    subscriptionId: $(Azure.Subscription.Id)
+                    action: 'Create Or Update Resource Group'
+                    resourceGroupName: $(Resource.Group.Name)
+                    location: 'West Europe'
+                    templateLocation: 'Linked artifact'
+                    csmFile: '$(Pipeline.Workspace)/ARMTemplate/template.json'
+                    csmParametersFile: '$(Pipeline.Workspace)/ARMTemplate/parameters.json'
+                    deploymentMode: 'Incremental'  
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+- stage: DeploySolution
+  dependsOn: DeployAzureWebapp
+  displayName: Deploy solution
+  jobs:
+    - deployment: solution
+      environment: dev
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - download: current
+                artifact: drop
+              - task: AzureRmWebAppDeployment@4
+                inputs:
+                  ConnectionType: 'AzureRM'
+                  azureSubscription: $(Azure.Resource.Manager.Connection)
+                  appType: 'webApp'
+                  WebAppName: 'TechnicalDocuIndexerWeb'
+                  packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
+                   
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
