@@ -19,7 +19,7 @@
     "resources": [
         {
             "type": "microsoft.insights/components",
-            "apiVersion": "2018-05-01-preview",
+            "apiVersion": "2015-05-01",
             "name": "[parameters('components_TechnicalDocuIndexerWeb_name')]",
             "location": "[resourceGroup().location]",
             "kind": "web",
