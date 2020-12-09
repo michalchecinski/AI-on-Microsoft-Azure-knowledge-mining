@@ -79,7 +79,7 @@ stages:
                     azureResourceManagerConnection: $(Azure.Resource.Manager.Connection)
                     subscriptionId: $(Azure.Subscription.Id)
                     action: 'Create Or Update Resource Group'
-                    resourceGroupName: $(Resource.Group.Name)
+                    resourceGroupName: "$(Resource.Group.Name)"
                     location: 'West Europe'
                     templateLocation: 'Linked artifact'
                     csmFile: '$(Pipeline.Workspace)/ARMTemplate/template.json'
