@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "serverfarms_ASP_test_bfbf_name": {
-            "value": "ASP-test-bfbf"
+        "serverfarms_ASP_techdocuindexer_name": {
+            "value": "ASP-techdocuindexer"
         },
         "sites_TechnicalDocuIndexerWeb_name": {
             "value": "TechnicalDocuIndexerWeb"

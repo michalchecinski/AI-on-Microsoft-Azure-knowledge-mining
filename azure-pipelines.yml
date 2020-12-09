@@ -1,5 +1,12 @@
 trigger:
-- main
+  batch: true
+  branches:
+    include:
+    - master
+  paths:
+    exclude:
+    - README.md
+    - images/*
 
 pool:
   vmImage: 'windows-latest'
@@ -10,7 +17,7 @@ resources:
 variables:
   - group: tdi-base
   - name: solution
-    value: '**/*.sln'
+    value: '**/TechnicalDocuIndexer.sln'
   - name: buildPlatform
     value: 'Any CPU'
   - name: buildConfiguration

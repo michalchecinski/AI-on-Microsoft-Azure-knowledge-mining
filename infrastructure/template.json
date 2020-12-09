@@ -2,17 +2,17 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "serverfarms_ASP_test_bfbf_name": {
-            "defaultValue": "ASP-test-bfbf",
-            "type": "String"
+        "serverfarms_ASP_techdocuindexer_name": {
+            "defaultValue": "ASP-techdocuindexer",
+            "type": "string"
         },
         "sites_TechnicalDocuIndexerWeb_name": {
             "defaultValue": "TechnicalDocuIndexerWeb",
-            "type": "String"
+            "type": "string"
         },
         "components_TechnicalDocuIndexerWeb_name": {
             "defaultValue": "TechnicalDocuIndexerWeb",
-            "type": "String"
+            "type": "string"
         }
     },
     "variables": {},
@@ -21,7 +21,7 @@
             "type": "microsoft.insights/components",
             "apiVersion": "2018-05-01-preview",
             "name": "[parameters('components_TechnicalDocuIndexerWeb_name')]",
-            "location": "westeurope",
+            "location": "[resourceGroup().location]",
             "kind": "web",
             "properties": {
                 "Application_Type": "web",
@@ -35,8 +35,8 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2018-02-01",
-            "name": "[parameters('serverfarms_ASP_test_bfbf_name')]",
-            "location": "West Europe",
+            "name": "[parameters('serverfarms_ASP_techdocuindexer_name')]",
+            "location": "[resourceGroup().location]",
             "sku": {
                 "name": "F1",
                 "tier": "Free",
@@ -60,26 +60,26 @@
             "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
             "name": "[parameters('sites_TechnicalDocuIndexerWeb_name')]",
-            "location": "West Europe",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_test_bfbf_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_techdocuindexer_name'))]"
             ],
             "kind": "app",
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "TechnicalDocuIndexerWeb.azurewebsites.net",
+                        "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "TechnicalDocuIndexerWeb.scm.azurewebsites.net",
+                        "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), 'scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_test_bfbf_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_techdocuindexer_name'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -98,7 +98,7 @@
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2018-11-01",
             "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), '/web')]",
-            "location": "West Europe",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('sites_TechnicalDocuIndexerWeb_name'))]"
             ],
@@ -170,7 +170,7 @@
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2018-11-01",
             "name": "[concat(parameters('sites_TechnicalDocuIndexerWeb_name'), '/', parameters('sites_TechnicalDocuIndexerWeb_name'), '.azurewebsites.net')]",
-            "location": "West Europe",
+            "location": "[resourceGroup().location]",
             "dependsOn": [
                 "[resourceId('Microsoft.Web/sites', parameters('sites_TechnicalDocuIndexerWeb_name'))]"
             ],
