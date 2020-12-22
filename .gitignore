@@ -589,4 +589,5 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudio,visualstudiocode,python,rider
+appsettings.json
 src/TechnicalDocuIndexer.Web/appsettings.json
