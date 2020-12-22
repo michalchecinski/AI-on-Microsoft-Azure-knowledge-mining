@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Options;
+@inject IOptions<ConfigurationModel> OptionsApplicationConfiguration
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,8 +9,20 @@
     <title>@ViewData["Title"] - Technical Documents Indexer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/azsearch.js@0.0.21/dist/AzSearch.css">
+
+    <style>
+        .searchResults__result h4 {
+            margin-top: 0px;
+            text-transform: uppercase;
+        }
+
+        .searchResults__result .resultDescription {
+            margin: 0.5em 0 0 0;
+        }
+    </style>
 </head>
-<body>
+<body style="padding-top: 0px !important">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
@@ -35,7 +50,7 @@
         </nav>
     </header>
     <div class="container full-height">
-        <main role="main" class="pb-3 full-height">
+        <main role="main" class="full-height">
             @RenderBody()
         </main>
     </div>
@@ -43,6 +58,59 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
     @RenderSection("Scripts", required: false)
+
 </body>
+
+<script src="https://cdn.jsdelivr.net/react/15.5.0/react.min.js"></script>
+<script src="https://cdn.jsdelivr.net/react/15.5.0/react-dom.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/redux/3.6.0/redux.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/azsearch.js@0.0.21/dist/AzSearch.bundle.js"></script>
+<script type="text/javascript">
+
+    var automagic = new AzSearch.Automagic({ index: "@OptionsApplicationConfiguration.Value.IndexName", queryKey: "@OptionsApplicationConfiguration.Value.QueryKey", service: "@OptionsApplicationConfiguration.Value.Service" });
+
+    const resultTemplate = `<div class="col-xs-12 col-sm-3 col-md-3 result_img" >
+            <img class="img-responsive result_img" src="data:image/png;base64,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" alt="image not found" />
+        </div><div class="col-xs-12 col-sm-9 col-md-9"><h4>{{metadata_storage_name}}</h4><div class="resultDescription">{{{text}}}</div></div>`;
+
+    automagic.addResults("results", { count: true }, resultTemplate);
+    automagic.addPager("pager");
+
+    var suggestionsProcessor = function (results) {
+        return results.map(function (result) {
+            result.searchText = result["search.text"];
+            return result;
+        });
+    };
+
+    automagic.store.setSuggestionsProcessor(suggestionsProcessor);
+
+    var suggestionsTemplate = `
+            <p> metadata_storage_size: {{metadata_storage_size}} </p>
+            <p> metadata_storage_name: {{metadata_storage_name}} </p>`;
+
+    automagic.addSearchBox("searchBox",
+        {
+            highlightPreTag: "<b>",
+            highlightPostTag: "</b>",
+            suggesterName: "testName",
+            select: "metadata_storage_size,metadata_storage_name"
+        },
+        "",
+        suggestionsTemplate);
+
+   automagic.addCheckboxFacet("metadata_storage_file_extensionFacet", "metadata_storage_file_extension", "string");
+   automagic.addCheckboxFacet("keyphrasesFacet", "keyphrases", "collection");
+   automagic.addCheckboxFacet("imageTagsFacet", "imageTags", "collection");
+
+  automagic.addClearFiltersButton("clearFilters");
+</script>
+
 </html>
