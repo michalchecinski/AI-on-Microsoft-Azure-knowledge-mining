@@ -1,9 +1,12 @@
-﻿using Azure.Search.Documents.Indexes;
+﻿using Azure;
+using Azure.Search.Documents;
+using Azure.Search.Documents.Indexes;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TechnicalDocuIndexer.Web.Models;
 
 namespace TechnicalDocuIndexer.Web.Service.Utils
 {
@@ -20,12 +23,37 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
             key = config.GetSection("APIKey").Value;
         }
 
-        public List<String> FetchDocument(string key)
+        public DocumentDetails FetchDocument(string id)
         {
-            var searchClient = new SearchIndexClient(serviceName, indexName, new SearchCredentials(queryApiKey));
+            var searchClient = CreateSearchClient();
 
-            var document = searchClient.Documents.Get<YourDocument>(id);
+            DocumentDetails document = searchClient.GetDocument<DocumentDetails>(id);
+            document.metadata_storage_path = ConvertFromBase64String(document.metadata_storage_path); 
             return document;
+        }
+
+        private SearchClient CreateSearchClient()
+        {
+            SearchClient searchClient = new SearchClient(endpoint, indexName, new AzureKeyCredential(key));
+            return searchClient;
+        }
+
+        private string ConvertFromBase64String(string input)
+        {
+            if (String.IsNullOrWhiteSpace(input)) return input;
+            try
+            {
+                string working = input.Replace('-', '+').Replace('_', '/'); ;
+                while (working.Length % 4 != 0)
+                {
+                    working += '=';
+                }
+                return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(working));
+            }
+            catch (Exception)
+            {
+                return input;
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TechnicalDocuIndexer.Web.Service;
+using TechnicalDocuIndexer.Web.Service.Utils;
 
 namespace TechnicalDocuIndexer.Web
 {
@@ -24,6 +25,7 @@ namespace TechnicalDocuIndexer.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IFileHandler, TemporaryHandler>();
+            services.AddSingleton<DocumentService, DocumentService>();
             services.AddControllersWithViews();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

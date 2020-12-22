@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using TechnicalDocuIndexer.Web.Models;
 using TechnicalDocuIndexer.Web.Service;
