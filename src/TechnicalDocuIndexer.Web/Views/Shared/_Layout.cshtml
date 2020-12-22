@@ -104,8 +104,10 @@
             <div class="col-9">
                 <h4><a style="text-decoration:none !important" href="/DocumentDetailsController/Details?id={{metadata_storage_path}}">{{metadata_storage_name}}</a></h4>
                 <div class="resultDescription">{{description}}</div>
+                <span class="pt-1"><a style="text-decoration:none !important" href="/DocumentDetailsController/File?id={{metadata_storage_path}} target="_blank"">DOWNLOAD</a></span>
             </div>
         </div>
+        <hr style="width: 100% !important; border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));" />
     </div>`;
 
     automagic.addResults("results", { count: true }, resultTemplate);
@@ -116,9 +118,9 @@
 
             globalResults = result;
 
-            if (!isBlank(result.text)) {
+            if (!isBlank(result.text.join(" "))) {
                 var text = result.text;
-                result.description = text.toString().length < 300 ? text : text.toString().substring(0, 300) + "...";
+                result.description = text.toString().length < 600 ? text.join(" ") : text.join(" ").toString().substring(0, 600) + "...";
             } else {
                 result.description = "Description not avaible";
             }
