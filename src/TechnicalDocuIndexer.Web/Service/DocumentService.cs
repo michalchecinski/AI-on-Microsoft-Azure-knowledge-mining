@@ -18,9 +18,9 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
 
         public DocumentService(IConfiguration config)
         {
-            indexName = config.GetSection("IndexName").Value;
-            endpoint = new Uri(config.GetSection("SearchEndpoint").Value);
-            key = config.GetSection("APIKey").Value;
+            indexName = config.GetSection("Search").GetSection("IndexName").Value;
+            endpoint = new Uri(config.GetSection("Search").GetSection("SearchEndpoint").Value);
+            key = config.GetSection("Search").GetSection("APIKey").Value;
         }
 
         public DocumentDetails FetchDocument(string id)

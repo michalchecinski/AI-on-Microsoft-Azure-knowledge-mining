@@ -42,7 +42,7 @@ else
         <h5>Keyphrases</h5>
         @foreach (var phrase in Model.keyphrases)
         {
-            @phrase;
+            @(phrase + " ");
         }
         <hr />
     </div>
@@ -51,7 +51,7 @@ else
         <h5>Organizations</h5>
         @foreach (var org in Model.organizations)
         {
-            @org;
+            @(org + " ");
         }
         <hr />
     </p>
@@ -60,7 +60,7 @@ else
         <h5>Image Tags</h5>
         @foreach (var tag in Model.imageTags)
         {
-            @tag;
+            @(tag + " ");
         }
         <hr />
     </p>
