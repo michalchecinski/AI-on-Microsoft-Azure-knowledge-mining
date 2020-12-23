@@ -9,7 +9,10 @@
     <title>@ViewData["Title"] - Technical Documents Indexer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/azsearch.js@0.0.21/dist/AzSearch.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
 
     <style>
         .searchResults__result h4 {
@@ -161,7 +164,7 @@
    automagic.addCheckboxFacet("keyphrasesFacet", "keyphrases", "collection");
    automagic.addCheckboxFacet("imageTagsFacet", "imageTags", "collection");
 
-  automagic.addClearFiltersButton("clearFilters");
+   automagic.addClearFiltersButton("clearFilters");
 </script>
 
 </html>
