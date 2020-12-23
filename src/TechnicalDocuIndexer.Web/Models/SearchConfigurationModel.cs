@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Models
 {
-    public class ConfigurationModel
+    public class SearchConfigurationModel
     {
         public string IndexName { get; set; }
         public string QueryKey { get; set; }

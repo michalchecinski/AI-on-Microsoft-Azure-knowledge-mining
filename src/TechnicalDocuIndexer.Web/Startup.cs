@@ -28,7 +28,7 @@ namespace TechnicalDocuIndexer.Web
             services.AddSingleton<IFileHandler, TemporaryHandler>();
             services.AddSingleton<DocumentService, DocumentService>();
             services.AddControllersWithViews();
-            services.Configure<ConfigurationModel>(Configuration.GetSection("Search"));
+            services.Configure<SearchConfigurationModel>(Configuration.GetSection("Search"));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
