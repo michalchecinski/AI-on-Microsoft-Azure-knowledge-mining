@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TechnicalDocuIndexer.Web.Models;
 using TechnicalDocuIndexer.Web.Service;
 using TechnicalDocuIndexer.Web.Service.Utils;
 
@@ -27,6 +28,7 @@ namespace TechnicalDocuIndexer.Web
             services.AddSingleton<IFileHandler, TemporaryHandler>();
             services.AddSingleton<DocumentService, DocumentService>();
             services.AddControllersWithViews();
+            services.Configure<ConfigurationModel>(Configuration.GetSection("Search"));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
