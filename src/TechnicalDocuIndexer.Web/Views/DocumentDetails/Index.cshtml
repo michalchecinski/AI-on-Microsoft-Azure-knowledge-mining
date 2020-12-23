@@ -1,0 +1,70 @@
+﻿@model DocumentDetails
+@{
+    ViewData["Title"] = "Document details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Document details</h4>
+<hr />
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible" style="margin-top:20px">
+        @ViewBag.Message
+    </div>
+}
+<form asp-controller="DocumentDetails" asp-action="Index" class="col-6 active-cyan-4">
+    <div class="form-group">
+
+        <input id="id" name="id" class="form-control" type="text" placeholder="Search"
+               aria-label="Search">
+    </div>
+</form>
+<hr />
+@if (Model == null)
+{
+    <div>Type file name to fetch details</div>
+}
+else
+{
+    <h2>
+        @Model.metadata_storage_name  <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_name">Download</a>
+    </h2>
+
+    <div>
+        <img src="@Url.Action("File","DocumentDetails", new {id=@Model.metadata_storage_name})" />
+    </div>
+
+
+    <h5>Content</h5>
+    <div>@Model.merged_content</div>
+    <div>
+        <hr>
+        <h5>Keyphrases</h5>
+        @foreach (var phrase in Model.keyphrases)
+        {
+            @(phrase + " ");
+        }
+        <hr />
+    </div>
+    <p>
+        <hr>
+        <h5>Organizations</h5>
+        @foreach (var org in Model.organizations)
+        {
+            @(org + " ");
+        }
+        <hr />
+    </p>
+    <p>
+        <hr>
+        <h5>Image Tags</h5>
+        @foreach (var tag in Model.imageTags)
+        {
+            @(tag + " ");
+        }
+        <hr />
+    </p>
+}
+
+
+

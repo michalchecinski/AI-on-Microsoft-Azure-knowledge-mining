@@ -58,6 +58,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-white-50" asp-area="" asp-controller="File" asp-action="Index">Upload Files</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white-50" asp-area="" asp-controller="DocumentDetails" asp-action="Index">Document Details</a>
+                        </li>
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-auto text-white">
@@ -121,9 +124,9 @@
                 <img style="width: 80% !important" class="img-responsive result_img" src="{{logo}}" alt="image not found" />
             </div>
             <div class="col-9">
-                <h4><a style="text-decoration:none !important" href="/DocumentDetailsController/Details?id={{metadata_storage_path}}">{{metadata_storage_name}}</a></h4>
+                <h4><a style="text-decoration:none !important" href="/DocumentDetails/Index/{{metadata_storage_path}}">{{metadata_storage_name}}</a></h4>
                 <div class="resultDescription pb-1">{{description}}</div>
-                <span><a style="text-decoration:none !important" href="/DocumentDetailsController/File?id={{metadata_storage_path}} target="_blank"">DOWNLOAD</a></span>
+                <span><a style="text-decoration:none !important" href="/DocumentDetails/File/{{metadata_storage_name}} target="_blank"">DOWNLOAD</a></span>
             </div>
         </div>
         <hr style="width: 100% !important; border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));" />

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TechnicalDocuIndexer.Web.Models;
 using TechnicalDocuIndexer.Web.Service;
+using TechnicalDocuIndexer.Web.Service.Utils;
 
 namespace TechnicalDocuIndexer.Web
 {
@@ -25,6 +26,7 @@ namespace TechnicalDocuIndexer.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IFileHandler, TemporaryHandler>();
+            services.AddSingleton<DocumentService, DocumentService>();
             services.AddControllersWithViews();
             services.Configure<ConfigurationModel>(Configuration.GetSection("Search"));
         }
