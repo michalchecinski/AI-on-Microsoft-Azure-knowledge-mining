@@ -91,7 +91,14 @@
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
-                "siteConfig": {},
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "Connections:StorageAccountName",
+                            "value": "[parameters('storageAccountName')]"
+                        }
+                    ]
+                },
                 "scmSiteAlsoStopped": false,
                 "clientAffinityEnabled": true,
                 "clientCertEnabled": false,
