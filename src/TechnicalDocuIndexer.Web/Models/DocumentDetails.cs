@@ -11,6 +11,9 @@ namespace TechnicalDocuIndexer.Web.Models
         [SimpleField(IsKey = true)]
         public string metadata_storage_path { get; set; }
         public string metadata_storage_name { get; set; }
+        
+        public string StorageUrl { get; set; }
+        
         public string metadata_storage_file_extension { get; set; }
         public List<string> keyphrases { get; set; }
         public List<string> organizations { get; set; }

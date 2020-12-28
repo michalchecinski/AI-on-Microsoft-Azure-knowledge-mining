@@ -27,11 +27,11 @@
 else
 {
     <h2>
-        @Model.metadata_storage_name  <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_name">Download</a>
+        @Model.metadata_storage_name  <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
     </h2>
 
     <div>
-        <img src="@Url.Action("File","DocumentDetails", new {id=@Model.metadata_storage_name})" />
+        <img src="@Url.Action("File","DocumentDetails", new {id=@Model.metadata_storage_path})" />
     </div>
 
 
