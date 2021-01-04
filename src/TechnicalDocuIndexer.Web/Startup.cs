@@ -28,8 +28,10 @@ namespace TechnicalDocuIndexer.Web
 
             services.AddSingleton<IFileHandler, TemporaryHandler>();
             services.AddSingleton<DocumentService, DocumentService>();
+            services.AddSingleton<IFileRepository, AzureStorageFileRepository>();
             services.AddControllersWithViews();
-            services.Configure<ConfigurationModel>(Configuration.GetSection("Search"));
+            services.Configure<SearchConfigurationModel>(Configuration.GetSection("Search"));
+            services.Configure<ConnectionConfigurationModel>(Configuration.GetSection("Connections"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

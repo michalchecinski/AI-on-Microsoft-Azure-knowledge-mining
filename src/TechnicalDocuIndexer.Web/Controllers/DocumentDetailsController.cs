@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using TechnicalDocuIndexer.Web.Models;
+using TechnicalDocuIndexer.Web.Service;
 using TechnicalDocuIndexer.Web.Service.Utils;
 
 namespace TechnicalDocuIndexer.Web.Controllers
@@ -14,40 +16,34 @@ namespace TechnicalDocuIndexer.Web.Controllers
     {
 
         private readonly DocumentService _documentService;
+        private readonly IFileRepository _fileRepository;
 
-        public DocumentDetailsController(DocumentService documentService)
+        public DocumentDetailsController(DocumentService documentService,
+            IFileRepository fileRepository)
         {
             _documentService = documentService;
+            _fileRepository = fileRepository;
         }
 
-        public IActionResult Index(string id)
+        public async Task<IActionResult> Index(string id)
         {
             DocumentDetails document = null;
             if(id != null)
             {
-                document = _documentService.FetchDocument(id);
+                document = await _documentService.FetchDocument(id);
             }
             return View(document);
         }
 
-        public DocumentDetails Details(string id)
+        public async Task<ActionResult> File(string id)
         {
-            return _documentService.FetchDocument(id);
-        }
-
-        public ActionResult File(string id)
-        {
-            //Will be replaced with BlobService call to download and return binary data of file
-            var url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPQEilGdtC0M-LvN_9otOWT0hauBrKfAy_Xg&usqp=CAU";
             var contentType = "image/png";
-            byte[] data;
-            using (WebClient client = new WebClient())
-            {
-                data = client.DownloadData(url);
-                contentType = client.ResponseHeaders["Content-Type"];
-            }
-            MemoryStream ms = new MemoryStream(data);
-            return File(ms.ToArray(), contentType, id);
+            var docDetails = await _documentService.FetchDocument(id);
+            var storageUrl = docDetails.StorageUrl;
+
+            var content = await _fileRepository.DownloadFileContent(storageUrl);
+            
+            return File(content, contentType, docDetails.metadata_storage_name);
         }
     }
 }

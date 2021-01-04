@@ -10,6 +10,9 @@
         },
         "components_TechnicalDocuIndexerWeb_name": {
             "value": "TechnicalDocuIndexerWeb"
+        },
+        "storageAccountName": {
+            "value": "sttechnicaldocuindexer"
         }
     }
 }

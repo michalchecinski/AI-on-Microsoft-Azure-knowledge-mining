@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverfarms_ASP_techdocuindexer_name": {
@@ -13,9 +13,14 @@
         "components_TechnicalDocuIndexerWeb_name": {
             "defaultValue": "TechnicalDocuIndexerWeb",
             "type": "string"
+        },
+        "storageAccountName": {
+            "type": "string"
         }
     },
-    "variables": {},
+    "variables": {
+        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'ba92f5b4-2d11-453d-a403-e96b0029c9fe')]"
+    },
     "resources": [
         {
             "type": "microsoft.insights/components",
@@ -61,6 +66,9 @@
             "apiVersion": "2018-11-01",
             "name": "[parameters('sites_TechnicalDocuIndexerWeb_name')]",
             "location": "[resourceGroup().location]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_techdocuindexer_name'))]"
             ],
@@ -83,7 +91,14 @@
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
-                "siteConfig": {},
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "Connections:StorageAccountName",
+                            "value": "[parameters('storageAccountName')]"
+                        }
+                    ]
+                },
                 "scmSiteAlsoStopped": false,
                 "clientAffinityEnabled": true,
                 "clientCertEnabled": false,
@@ -177,6 +192,15 @@
             "properties": {
                 "siteName": "TechnicalDocuIndexerWeb",
                 "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
+            "apiVersion": "2018-09-01-preview",
+            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', guid(uniqueString(concat(parameters('storageAccountName'), parameters('sites_TechnicalDocuIndexerWeb_name')))))]",
+            "properties": {
+                "roleDefinitionId": "[variables('roleDefinitionId')]",
+                "principalId": "[reference(resourceId('Microsoft.Web/sites/', parameters('sites_TechnicalDocuIndexerWeb_name')), '2018-02-01', 'Full').identity.principalId]"
             }
         }
     ]

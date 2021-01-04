@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using TechnicalDocuIndexer.Web.Models;
 
 namespace TechnicalDocuIndexer.Web.Service.Utils
@@ -23,37 +25,28 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
             key = config.GetSection("Search").GetSection("APIKey").Value;
         }
 
-        public DocumentDetails FetchDocument(string id)
+        public async Task<DocumentDetails> FetchDocument(string id)
         {
             var searchClient = CreateSearchClient();
 
-            DocumentDetails document = searchClient.GetDocument<DocumentDetails>(id);
-            document.metadata_storage_path = ConvertFromBase64String(document.metadata_storage_path); 
+            var documentResponse = await searchClient.GetDocumentAsync<DocumentDetails>(id);
+            var document = documentResponse.Value;
+            document.StorageUrl = ConvertFromBase64String(document.metadata_storage_path);
             return document;
         }
 
         private SearchClient CreateSearchClient()
         {
-            SearchClient searchClient = new SearchClient(endpoint, indexName, new AzureKeyCredential(key));
+            var searchClient = new SearchClient(endpoint, indexName, new AzureKeyCredential(key));
             return searchClient;
         }
 
         private string ConvertFromBase64String(string input)
         {
-            if (String.IsNullOrWhiteSpace(input)) return input;
-            try
-            {
-                string working = input.Replace('-', '+').Replace('_', '/'); ;
-                while (working.Length % 4 != 0)
-                {
-                    working += '=';
-                }
-                return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(working));
-            }
-            catch (Exception)
-            {
-                return input;
-            }
+            var encodedStringWithoutTrailingCharacter = input.Substring(0, input.Length - 1);
+            var encodedBytes =
+                Microsoft.AspNetCore.WebUtilities.WebEncoders.Base64UrlDecode(encodedStringWithoutTrailingCharacter);
+            return HttpUtility.UrlDecode(encodedBytes, Encoding.UTF8);
         }
     }
 }
