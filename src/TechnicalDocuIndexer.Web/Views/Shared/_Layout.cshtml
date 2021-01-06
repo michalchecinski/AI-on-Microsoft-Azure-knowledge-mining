@@ -71,10 +71,8 @@
             </div>
         </nav>
     </header>
-    <div class="container full-height">
-        <main role="main" class="full-height">
-            @RenderBody()
-        </main>
+    <div class="container-fluid">
+         @RenderBody()
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -135,9 +133,7 @@
     automagic.addResults("results", { count: true }, resultTemplate);
 
     var resultsProcessor = function (results) {
-
         return results.map(function (result) {
-
             globalResults = result;
 
             if (!isBlank(result.text.join(" "))) {
@@ -152,6 +148,7 @@
                 return result;
             });
     };
+
     automagic.store.setResultsProcessor(resultsProcessor);
 
     automagic.addPager("pager");
@@ -159,6 +156,7 @@
     var suggestionsProcessor = function (results) {
         return results.map(function (result) {
             result.searchText = result["search.text"];
+            result.displayText = result["metadata_storage_name"];
             return result;
         });
     };
@@ -176,7 +174,7 @@
             suggesterName: "testName",
             select: "metadata_storage_size,metadata_storage_name"
         },
-        "",
+        "displayText",
         suggestionsTemplate);
 
    automagic.addCheckboxFacet("metadata_storage_file_extensionFacet", "metadata_storage_file_extension", "string");
