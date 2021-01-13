@@ -19,7 +19,6 @@ namespace TechnicalDocuIndexer.Web.Controllers
             _handler = handler;
         } 
         
-        
         public IActionResult Index()
         {
             ViewBag.Message = TempData["Message"];
