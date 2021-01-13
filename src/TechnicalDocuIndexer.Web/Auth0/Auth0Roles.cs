@@ -2,6 +2,7 @@
 {
     public static class Auth0Roles
     {
-        public const string Reader = "Reader";
+        public const string FileUploader = "FileUploader";
+        public const string SearchReader = "SearchReader";
     }
 }

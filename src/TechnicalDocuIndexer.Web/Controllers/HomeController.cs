@@ -1,9 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TechnicalDocuIndexer.Web.Auth0;
@@ -22,14 +17,24 @@ namespace TechnicalDocuIndexer.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            if (User.IsInRole(Auth0Roles.SearchReader))
+            {
+                return RedirectToAction("Index", "Search");
+            }
+
+            if (User.IsInRole(Auth0Roles.FileUploader))
+            {
+                return RedirectToAction("Index", "File");
+            }
+
+            return RedirectToAction("Login", "Login");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             _logger.LogError(Activity.Current?.Id);
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
     }
 }

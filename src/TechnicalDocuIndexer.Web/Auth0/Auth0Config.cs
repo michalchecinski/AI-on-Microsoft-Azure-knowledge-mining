@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,22 +15,8 @@ namespace TechnicalDocuIndexer.Web.Auth0
         public static void AddAuth0(this IServiceCollection services, Auth0Settings auth0Settings)
         {
             var auth0Domain = $"https://{auth0Settings.Domain}/";
-            services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = auth0Domain;
-                    options.Audience = auth0Settings.Audience;
-                    // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = ClaimTypes.NameIdentifier,
-                        RoleClaimType = ClaimTypes.Role
-                    };
-                });
 
             services.Configure<CookiePolicyOptions>(options => { options.MinimumSameSitePolicy = SameSiteMode.None; });
-            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddAuthentication(options =>
                 {
@@ -60,19 +43,19 @@ namespace TechnicalDocuIndexer.Web.Auth0
                     options.Scope.Add("profile");
                     options.Scope.Add("email");
 
-                    // Set the correct name claim type
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        NameClaimType = "name",
-                        RoleClaimType = "https://schemas.quickstarts.com/roles"
-                    };
-
                     // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
                     // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
                     options.CallbackPath = new PathString("/callback");
 
                     // Configure the Claims Issuer to be Auth0
                     options.ClaimsIssuer = "Auth0";
+
+                    // Set the correct name claim type
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "https://schemas.quickstarts.com/roles"
+                    };
 
                     options.Events = new OpenIdConnectEvents
                     {
