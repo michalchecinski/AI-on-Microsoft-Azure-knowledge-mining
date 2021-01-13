@@ -1,4 +1,5 @@
-﻿@model DocumentDetails
+﻿@using TechnicalDocuIndexer.Web.Util
+@model DocumentDetails
 @{
     ViewData["Title"] = "Document details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,7 +39,7 @@
 
 
         <h5>Content</h5>
-        <div>@Model.merged_content</div>
+        @FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
         <div>
             <hr>
             <h5>Keyphrases</h5>
