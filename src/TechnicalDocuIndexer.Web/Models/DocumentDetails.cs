@@ -1,8 +1,5 @@
 ﻿using Azure.Search.Documents.Indexes;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Models
 {

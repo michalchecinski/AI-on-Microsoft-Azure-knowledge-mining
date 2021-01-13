@@ -1,5 +1,3 @@
-using System;
-
 namespace TechnicalDocuIndexer.Web.Models
 {
     public class ErrorViewModel
