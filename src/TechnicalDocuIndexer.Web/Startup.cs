@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using TechnicalDocuIndexer.Web.Auth0;
 using TechnicalDocuIndexer.Web.Models;
 using TechnicalDocuIndexer.Web.Service;
+using TechnicalDocuIndexer.Web.Service.Utils;
 
 namespace TechnicalDocuIndexer.Web
 {
@@ -26,6 +27,7 @@ namespace TechnicalDocuIndexer.Web
             services.AddAuth0(auth0Settings);
 
             services.AddSingleton<IFileHandler, TemporaryHandler>();
+            services.AddSingleton<DocumentService, DocumentService>();
             services.AddSingleton<IFileRepository, AzureStorageFileRepository>();
             services.AddControllersWithViews();
             services.Configure<SearchConfigurationModel>(Configuration.GetSection("Search"));
