@@ -55,15 +55,10 @@
                     </ul>
                 </div>
                 <ul class="navbar-nav ml-auto text-white">
-                    @if (!User.Identity.IsAuthenticated)
-                    {
-                        <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="Login">Log In</a>
-                    }
-                    else
+                    @if (User.Identity.IsAuthenticated)
                     {
                         <a class="nav-link text-white" asp-area="" asp-controller="Login" asp-action="Logout">Log out</a>
                     }
-
                 </ul>
             </div>
         </nav>
