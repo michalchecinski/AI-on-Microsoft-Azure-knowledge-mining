@@ -8,7 +8,7 @@
 
 <div class="container">
     <h4>Document details</h4>
-    <hr/>
+    <hr />
     @if (ViewBag.Message != null)
     {
         <div class="alert alert-success alert-dismissible" style="margin-top:20px">
@@ -26,41 +26,39 @@
         </h2>
 
         <div>
-            <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new {id = @Model.metadata_storage_path})"/>
+            <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new {id = @Model.metadata_storage_path})" />
         </div>
 
 
         <h5>Content</h5>
         @FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
+        <hr />
         <div>
-            <hr>
             <h5>Keyphrases</h5>
             @foreach (var phrase in Model.keyphrases)
             {
                 @(phrase + " ")
                 ;
             }
-            <hr/>
+            <hr />
         </div>
         <p>
-            <hr>
             <h5>Organizations</h5>
             @foreach (var org in Model.organizations)
             {
                 @(org + " ")
                 ;
             }
-            <hr/>
+            <hr />
         </p>
         <p>
-            <hr>
             <h5>Image Tags</h5>
             @foreach (var tag in Model.imageTags)
             {
                 @(tag + " ")
                 ;
             }
-            <hr/>
+            <hr />
         </p>
     }
 </div>
