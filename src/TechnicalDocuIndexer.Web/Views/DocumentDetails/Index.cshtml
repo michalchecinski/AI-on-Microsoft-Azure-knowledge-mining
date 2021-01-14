@@ -15,17 +15,9 @@
             @ViewBag.Message
         </div>
     }
-    <form asp-controller="DocumentDetails" asp-action="Index" class="col-6 active-cyan-4">
-        <div class="form-group">
-
-            <input id="id" name="id" class="form-control" type="text" placeholder="Search"
-                   aria-label="Search">
-        </div>
-    </form>
-    <hr/>
     @if (Model == null)
     {
-        <div>Type file name to fetch details</div>
+        <div>Can not load document details, please try again later.</div>
     }
     else
     {
