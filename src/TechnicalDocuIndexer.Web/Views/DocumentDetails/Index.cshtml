@@ -25,9 +25,12 @@
             FILE: @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
         </h2>
         <hr />
-        <div>
-            <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new {id = @Model.metadata_storage_path})" />
-        </div>
+        if (@Model.metadata_storage_name.ToUpper().EndsWith(".PNG") || @Model.metadata_storage_name.ToUpper().EndsWith(".JPG"))
+        {
+            <div>
+                <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new { id = @Model.metadata_storage_path })" />
+            </div>
+        }
 
         Microsoft.AspNetCore.Html.HtmlString ContentData = FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
         if (ContentData != null && !String.IsNullOrEmpty(ContentData.ToString()))
