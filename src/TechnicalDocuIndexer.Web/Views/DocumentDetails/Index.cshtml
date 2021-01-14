@@ -8,68 +8,83 @@
 
 <div class="container">
     <h4>Document details</h4>
-    <hr/>
+    <hr />
     @if (ViewBag.Message != null)
     {
         <div class="alert alert-success alert-dismissible" style="margin-top:20px">
             @ViewBag.Message
         </div>
     }
-    <form asp-controller="DocumentDetails" asp-action="Index" class="col-6 active-cyan-4">
-        <div class="form-group">
-
-            <input id="id" name="id" class="form-control" type="text" placeholder="Search"
-                   aria-label="Search">
-        </div>
-    </form>
-    <hr/>
     @if (Model == null)
     {
-        <div>Type file name to fetch details</div>
+        <div>Can not load document details, please try again later.</div>
     }
     else
     {
         <h2>
-            @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
+            FILE: @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
         </h2>
+        <hr />
+        if (@Model.metadata_storage_name.ToUpper().EndsWith(".PNG") || @Model.metadata_storage_name.ToUpper().EndsWith(".JPG"))
+        {
+            <div>
+                <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new { id = @Model.metadata_storage_path })" />
+            </div>
+        }
 
-        <div>
-            <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new {id = @Model.metadata_storage_path})"/>
-        </div>
-
-
-        <h5>Content</h5>
-        @FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
-        <div>
-            <hr>
-            <h5>Keyphrases</h5>
-            @foreach (var phrase in Model.keyphrases)
-            {
-                @(phrase + " ")
-                ;
-            }
-            <hr/>
-        </div>
-        <p>
-            <hr>
-            <h5>Organizations</h5>
-            @foreach (var org in Model.organizations)
-            {
-                @(org + " ")
-                ;
-            }
-            <hr/>
-        </p>
-        <p>
-            <hr>
-            <h5>Image Tags</h5>
-            @foreach (var tag in Model.imageTags)
-            {
-                @(tag + " ")
-                ;
-            }
-            <hr/>
-        </p>
+        Microsoft.AspNetCore.Html.HtmlString ContentData = FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
+        if (ContentData != null && !String.IsNullOrEmpty(ContentData.ToString()))
+        {
+            <div>
+                <h5 class="text-primary">Content</h5>
+                @ContentData
+                <hr />
+            </div>
+        }
+        if (Model.keyphrases != null && Model.keyphrases.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Keyphrases</h5>
+                <ul>
+                    @foreach (var phrase in Model.keyphrases)
+                    {
+                        <li>
+                            @(phrase)
+                        </li>
+                    }
+                </ul>
+                <hr />
+            </div>
+        }
+        if (Model.organizations != null && Model.organizations.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Organizations</h5>
+                <ul style="list-style-type:square">
+                    @foreach (var org in Model.organizations)
+                    {
+                        <li>
+                            @(org)
+                        </li>
+                    }
+                </ul>
+                <hr />
+            </div>
+        }
+        if (Model.imageTags != null && Model.imageTags.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Image Tags</h5>
+                <ul style="list-style-type:circle">
+                    @foreach (var tag in Model.imageTags)
+                    {
+                        <li>
+                            @(tag)
+                        </li>
+                    }
+                </ul>
+                <hr />
+            </div>
+        }
     }
-    <
-</div>>
+</div>
