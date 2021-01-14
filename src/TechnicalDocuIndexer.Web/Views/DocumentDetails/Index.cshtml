@@ -45,11 +45,14 @@
         {
             <div>
                 <h5 class="text-primary">Keyphrases</h5>
-                @foreach (var phrase in Model.keyphrases)
-                {
-                    @(phrase + " ")
-                    ;
-                }
+                <ul>
+                    @foreach (var phrase in Model.keyphrases)
+                    {
+                        <li>
+                            @(phrase)
+                        </li>
+                    }
+                </ul>
                 <hr />
             </div>
         }
@@ -57,11 +60,14 @@
         {
             <div>
                 <h5 class="text-primary">Organizations</h5>
-                @foreach (var org in Model.organizations)
-                {
-                    @(org + " ")
-                    ;
-                }
+                <ul style="list-style-type:square">
+                    @foreach (var org in Model.organizations)
+                    {
+                        <li>
+                            @(org)
+                        </li>
+                    }
+                </ul>
                 <hr />
             </div>
         }
@@ -69,11 +75,14 @@
         {
             <div>
                 <h5 class="text-primary">Image Tags</h5>
-                @foreach (var tag in Model.imageTags)
-                {
-                    @(tag + " ")
-                    ;
-                }
+                <ul style="list-style-type:circle">
+                    @foreach (var tag in Model.imageTags)
+                    {
+                        <li>
+                            @(tag)
+                        </li>
+                    }
+                </ul>
                 <hr />
             </div>
         }
