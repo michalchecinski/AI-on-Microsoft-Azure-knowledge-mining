@@ -22,43 +22,57 @@
     else
     {
         <h2>
-            @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
+            FILE: @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
         </h2>
-
+        <hr />
         <div>
             <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new {id = @Model.metadata_storage_path})" />
         </div>
 
-
-        <h5>Content</h5>
-        @FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
-        <hr />
-        <div>
-            <h5>Keyphrases</h5>
-            @foreach (var phrase in Model.keyphrases)
-            {
-                @(phrase + " ")
-                ;
-            }
-            <hr />
-        </div>
-        <p>
-            <h5>Organizations</h5>
-            @foreach (var org in Model.organizations)
-            {
-                @(org + " ")
-                ;
-            }
-            <hr />
-        </p>
-        <p>
-            <h5>Image Tags</h5>
-            @foreach (var tag in Model.imageTags)
-            {
-                @(tag + " ")
-                ;
-            }
-            <hr />
-        </p>
+        Microsoft.AspNetCore.Html.HtmlString ContentData = FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
+        if (ContentData != null && !String.IsNullOrEmpty(ContentData.ToString()))
+        {
+            <div>
+                <h5 class="text-primary">Content</h5>
+                @ContentData
+                <hr />
+            </div>
+        }
+        if (Model.keyphrases != null && Model.keyphrases.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Keyphrases</h5>
+                @foreach (var phrase in Model.keyphrases)
+                {
+                    @(phrase + " ")
+                    ;
+                }
+                <hr />
+            </div>
+        }
+        if (Model.organizations != null && Model.organizations.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Organizations</h5>
+                @foreach (var org in Model.organizations)
+                {
+                    @(org + " ")
+                    ;
+                }
+                <hr />
+            </div>
+        }
+        if (Model.imageTags != null && Model.imageTags.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Image Tags</h5>
+                @foreach (var tag in Model.imageTags)
+                {
+                    @(tag + " ")
+                    ;
+                }
+                <hr />
+            </div>
+        }
     }
 </div>
