@@ -37,7 +37,7 @@ namespace TechnicalDocuIndexer.Web.Controllers
             var docDetails = await _documentService.FetchDocument(id);
             var storageUrl = docDetails.StorageUrl;
 
-            var content = await _fileRepository.DownloadFileContent(storageUrl);
+            var content = await _fileRepository.DownloadFileContentAsync(storageUrl);
 
             return File(content, contentType, docDetails.metadata_storage_name);
         }

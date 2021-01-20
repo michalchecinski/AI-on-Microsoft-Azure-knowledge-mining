@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using TechnicalDocuIndexer.Web.Auth0;
-using TechnicalDocuIndexer.Web.Models;
 using TechnicalDocuIndexer.Web.Service;
+using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Controllers
 {
     [Authorize(Roles = Auth0Roles.FileUploader)]
     public class FileController : Controller
     {
-        private readonly IFileHandler _handler;
+        private readonly IFileUploadHandler _handler;
 
-        public FileController(IFileHandler handler)
+        public FileController(IFileUploadHandler handler)
         {
             _handler = handler;
         } 
@@ -22,23 +21,16 @@ namespace TechnicalDocuIndexer.Web.Controllers
         public IActionResult Index()
         {
             ViewBag.Message = TempData["Message"];
-            return View(_handler.GetAll());
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Upload(List<IFormFile> files, string description)
+        public async Task<IActionResult> UploadAsync(List<IFormFile> files)
         {
-            List<FileModel> result = _handler.Upload(files, description);
+            await _handler.UploadAsync(files);
 
-            TempData["Message"] = $"Successfully uploaded {result.Count} file(s) to memory.";
+            TempData["Message"] = $"Successfully uploaded {files.Count} file(s).";
             return RedirectToAction("Index");
-        }
-
-        public IActionResult Download(string id)
-        {
-            var file = _handler.GetAll().FirstOrDefault(obj => obj.Id.Equals(id));
-            if (file == null) return null;
-            return File(file.Data, file.FileType, file.Name + file.Extension);
         }
     }
 }

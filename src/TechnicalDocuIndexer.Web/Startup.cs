@@ -26,7 +26,7 @@ namespace TechnicalDocuIndexer.Web
             Configuration.GetSection(nameof(Auth0Settings)).Bind(auth0Settings);
             services.AddAuth0(auth0Settings);
 
-            services.AddSingleton<IFileHandler, TemporaryHandler>();
+            services.AddSingleton<IFileUploadHandler, FileUploadHandler>();
             services.AddSingleton<DocumentService, DocumentService>();
             services.AddSingleton<IFileRepository, AzureStorageFileRepository>();
             services.AddControllersWithViews();

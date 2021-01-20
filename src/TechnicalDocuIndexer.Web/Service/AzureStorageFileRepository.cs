@@ -18,7 +18,7 @@ namespace TechnicalDocuIndexer.Web.Service
             _storageAccountName = connectionConfigurationModel.Value.StorageAccountName;
         }
 
-        public async Task<byte[]> DownloadFileContent(string fileUrl)
+        public async Task<byte[]> DownloadFileContentAsync(string fileUrl)
         {
             var blobClient = new BlobClient(new Uri(fileUrl), new DefaultAzureCredential());
             
@@ -31,9 +31,9 @@ namespace TechnicalDocuIndexer.Web.Service
             return stream.ToArray();
         }
         
-        public async Task<byte[]> DownloadFileContent(string containerName, string fileName)
+        public async Task<byte[]> DownloadFileContentAsync(string containerName, string fileName)
         {
-            var containerClient = await GetBlobContainerClient(containerName);
+            var containerClient = await GetBlobContainerClientAsync(containerName);
             
             var blobClient = containerClient.GetBlobClient(fileName);
             
@@ -46,16 +46,16 @@ namespace TechnicalDocuIndexer.Web.Service
             return stream.ToArray();
         }
         
-        public async Task UploadFile(string containerName, string fileName, Stream fileContent)
+        public async Task UploadFileAsync(string containerName, string fileName, Stream fileContent)
         {
-            var containerClient = await GetBlobContainerClient(containerName);
+            var containerClient = await GetBlobContainerClientAsync(containerName);
         
             var blobClient = containerClient.GetBlobClient(fileName);
             
             await blobClient.UploadAsync(fileContent, true);
         }
         
-        private async Task<BlobContainerClient> GetBlobContainerClient(string containerName)
+        private async Task<BlobContainerClient> GetBlobContainerClientAsync(string containerName)
         {
             var containerEndpoint = $"https://{_storageAccountName}.blob.core.windows.net/{containerName}";
         
