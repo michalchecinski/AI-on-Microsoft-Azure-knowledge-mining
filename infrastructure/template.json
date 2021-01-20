@@ -16,6 +16,30 @@
         },
         "storageAccountName": {
             "type": "string"
+        },
+        "Auth0SettingsAudience": {
+            "type": "string"
+        },
+        "Auth0SettingsClientId": {
+            "type": "string"
+        },
+        "Auth0SettingsClientSecret": {
+            "type": "string"
+        },
+        "Auth0SettingsDomain": {
+            "type": "string"
+        },
+        "searchServiceName": {
+           "type": "string"
+        },
+        "SearchAPIKey": {
+           "type": "string"
+        },
+        "SearchIndexName": {
+           "type": "string"
+        },
+        "SearchQueryKey": {
+           "type": "string"
         }
     },
     "variables": {
@@ -96,6 +120,47 @@
                         {
                             "name": "Connections:StorageAccountName",
                             "value": "[parameters('storageAccountName')]"
+                        },
+                        {
+                            "name": "Auth0Settings:Audience",
+                            "value": "[parameters('Auth0SettingsAudience')]"
+                        },
+                        {
+                            "name": "Auth0Settings:ClientId",
+                            "value": "[parameters('Auth0SettingsClientId')]"
+                        },
+                        {
+                            "name": "Auth0Settings:ClientSecret",
+                            "value": "[parameters('Auth0SettingsClientSecret')]"
+                        },
+                        {
+                            "name": "Auth0Settings:Domain",
+                            "value": "[parameters('Auth0SettingsDomain')]"
+
+                        },
+                        {
+                            "name": "Search:AllowedHosts",
+                            "value": "*"
+                        },
+                        {
+                            "name": "Search:APIKey",
+                            "value": "[parameters('SearchAPIKey')]"
+                        },
+                        {
+                            "name": "Search:IndexName",
+                            "value": "[parameters('SearchIndexName')]"
+                        },
+                        {
+                            "name": "Search:QueryKey",
+                            "value": "[parameters('SearchQueryKey')]"
+                        },
+                        {
+                            "name": "Search:SearchEndpoint",
+                            "value": "[concat('https://', parameters('searchServiceName'), '.search.windows.net/')]'"
+                        },
+                        {
+                            "name": "Search:Service",
+                            "value": "[parameters('searchServiceName')]"
                         }
                     ]
                 },
