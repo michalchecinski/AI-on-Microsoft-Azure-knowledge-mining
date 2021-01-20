@@ -86,7 +86,8 @@ stages:
                     templateLocation: 'Linked artifact'
                     csmFile: '$(Pipeline.Workspace)/ARMTemplate/template.json'
                     csmParametersFile: '$(Pipeline.Workspace)/ARMTemplate/parameters.json'
-                    deploymentMode: 'Incremental'  
+                    deploymentMode: 'Incremental'
+                    overrideParameters: -Auth0SettingsAudience $(Auth0Settings.Audience) -Auth0SettingsClientId $(Auth0Settings.ClientId) -Auth0SettingsClientSecret $(Auth0Settings.ClientSecret) -Auth0SettingsDomain $(Auth0Settings.Domain) -searchServiceName $(Search.Service) -SearchAPIKey $(Search.APIKey) -SearchIndexName $(Search.IndexName) -SearchQueryKey $(Search.QueryKey)
 
 - stage: DeploySolution
   dependsOn: DeployAzureWebapp
