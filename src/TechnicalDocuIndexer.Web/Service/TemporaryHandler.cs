@@ -1,48 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using TechnicalDocuIndexer.Web.Models;
+using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Service
 {
     public class TemporaryHandler : IFileHandler
     {
+        private readonly IFileRepository _fileRepository;
 
-        private List<FileModel> files;
-
-        public TemporaryHandler()
+        public TemporaryHandler(IFileRepository fileRepository)
         {
-            this.files = new List<FileModel>();
+            _fileRepository = fileRepository;
         }
 
-        public List<FileModel> GetAll()
+        public async Task UploadAsync(List<IFormFile> files)
         {
-            return files;
-        }
-
-        public List<FileModel> Upload(List<IFormFile> files, string description)
-        {
-            List<FileModel> newFiles = new List<FileModel>();
             foreach (var file in files)
             {
                 using var memoryStream = new MemoryStream();
-                file.CopyToAsync(memoryStream);
+                await file.CopyToAsync(memoryStream);
+                memoryStream.Seek(0, SeekOrigin.Begin);
 
-                newFiles.Add(new FileModel
-                (
-                    Guid.NewGuid().ToString(),
-                    Path.GetFileNameWithoutExtension(file.FileName),
-                    file.ContentType,
-                    Path.GetExtension(file.FileName),
-                    description,
-                    null,
-                    DateTime.UtcNow,
-                    memoryStream.ToArray()
-                ));
+                await _fileRepository.UploadFileAsync("initial-load", file.FileName, memoryStream);
             }
-            this.files.AddRange(newFiles);
-            return newFiles;
         }
     }
 }

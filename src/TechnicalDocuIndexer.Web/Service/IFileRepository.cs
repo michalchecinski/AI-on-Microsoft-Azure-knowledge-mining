@@ -7,6 +7,6 @@ namespace TechnicalDocuIndexer.Web.Service
     {
         Task<byte[]> DownloadFileContent(string fileUrl);
         Task<byte[]> DownloadFileContent(string containerName, string fileName);
-        Task UploadFile(string containerName, string fileName, Stream fileContent);
+        Task UploadFileAsync(string containerName, string fileName, Stream fileContent);
     }
 }

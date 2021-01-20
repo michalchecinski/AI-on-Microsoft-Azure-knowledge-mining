@@ -46,7 +46,7 @@ namespace TechnicalDocuIndexer.Web.Service
             return stream.ToArray();
         }
         
-        public async Task UploadFile(string containerName, string fileName, Stream fileContent)
+        public async Task UploadFileAsync(string containerName, string fileName, Stream fileContent)
         {
             var containerClient = await GetBlobContainerClient(containerName);
         
