@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Service
 {
-    public interface IFileHandler
+    public interface IFileUploadHandler
     {
         Task UploadAsync(List<IFormFile> files);
     }

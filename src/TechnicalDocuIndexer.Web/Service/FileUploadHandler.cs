@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace TechnicalDocuIndexer.Web.Service
 {
-    public class TemporaryHandler : IFileHandler
+    public class FileUploadHandler : IFileUploadHandler
     {
         private readonly IFileRepository _fileRepository;
 
-        public TemporaryHandler(IFileRepository fileRepository)
+        public FileUploadHandler(IFileRepository fileRepository)
         {
             _fileRepository = fileRepository;
         }

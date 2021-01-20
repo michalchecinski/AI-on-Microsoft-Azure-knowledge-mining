@@ -5,8 +5,8 @@ namespace TechnicalDocuIndexer.Web.Service
 {
     public interface IFileRepository
     {
-        Task<byte[]> DownloadFileContent(string fileUrl);
-        Task<byte[]> DownloadFileContent(string containerName, string fileName);
+        Task<byte[]> DownloadFileContentAsync(string fileUrl);
+        Task<byte[]> DownloadFileContentAsync(string containerName, string fileName);
         Task UploadFileAsync(string containerName, string fileName, Stream fileContent);
     }
 }

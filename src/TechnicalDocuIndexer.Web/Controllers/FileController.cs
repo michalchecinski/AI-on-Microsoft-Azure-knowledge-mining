@@ -11,9 +11,9 @@ namespace TechnicalDocuIndexer.Web.Controllers
     [Authorize(Roles = Auth0Roles.FileUploader)]
     public class FileController : Controller
     {
-        private readonly IFileHandler _handler;
+        private readonly IFileUploadHandler _handler;
 
-        public FileController(IFileHandler handler)
+        public FileController(IFileUploadHandler handler)
         {
             _handler = handler;
         } 
