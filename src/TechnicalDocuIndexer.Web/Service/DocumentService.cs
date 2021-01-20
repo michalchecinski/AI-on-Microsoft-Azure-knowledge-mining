@@ -1,8 +1,13 @@
 ﻿using Azure;
 using Azure.Search.Documents;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using TechnicalDocuIndexer.Web.Models;
@@ -25,10 +30,12 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
         public async Task<DocumentDetails> FetchDocument(string id)
         {
             var searchClient = CreateSearchClient();
-
             var documentResponse = await searchClient.GetDocumentAsync<DocumentDetails>(id);
             var document = documentResponse.Value;
+
+            document.organizationsEntities = ConvertEntitiesFromString(document.bing_entities);
             document.StorageUrl = ConvertFromBase64String(document.metadata_storage_path);
+
             return document;
         }
 
@@ -44,6 +51,17 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
             var encodedBytes =
                 Microsoft.AspNetCore.WebUtilities.WebEncoders.Base64UrlDecode(encodedStringWithoutTrailingCharacter);
             return HttpUtility.UrlDecode(encodedBytes, Encoding.UTF8);
+        }
+
+        private List<Entity> ConvertEntitiesFromString(string input)
+        {
+            if (input != null)
+            {
+                var escaped = Regex.Unescape(input);
+                List<Entity> entities = JsonConvert.DeserializeObject<List<Entity>>(escaped);
+                return entities.Where(entity => (entity.videos != null && entity.webPages != null)).ToList();
+            }
+            return new List<Entity>();
         }
     }
 }
