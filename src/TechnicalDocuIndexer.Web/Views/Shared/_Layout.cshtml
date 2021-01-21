@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/azsearch.js@0.0.21/dist/AzSearch.css">
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 
@@ -37,9 +38,9 @@
             background: #888;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
     </style>
 </head>
 <body style="padding-top: 0px !important">
@@ -72,7 +73,7 @@
         </nav>
     </header>
     <div class="container-fluid">
-         @RenderBody()
+        @RenderBody()
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -94,6 +95,10 @@
 <script src="https://cdn.jsdelivr.net/npm/azsearch.js@0.0.21/dist/AzSearch.bundle.js"></script>
 <script type="text/javascript">
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+
     var automagic = new AzSearch.Automagic({ index: "@OptionsApplicationConfiguration.Value.IndexName", queryKey: "@OptionsApplicationConfiguration.Value.QueryKey", service: "@OptionsApplicationConfiguration.Value.Service" });
     var globalResults = {};
 
@@ -111,6 +116,14 @@
         }
     }
 
+    function attachTime(time) {
+        if (time && time > 0) {
+            return 'block';
+        } {
+            return 'none';
+        }
+    }
+
     function isBlank(str) {
         return (!str || /^\s*$/.test(str));
     }
@@ -122,7 +135,14 @@
                 <img style="width: 50% !important" class="img-responsive result_img" src="{{logo}}" alt="image not found" />
             </div>
             <div class="col-10">
-                <h4><a style="text-decoration:none !important" href="/DocumentDetails/Index/{{metadata_storage_path}}">{{metadata_storage_name}}</a></h4>
+                <div class="row">
+                  <div class="col-10">
+                        <h4><a style="text-decoration:none !important" href="/DocumentDetails/Index/{{metadata_storage_path}}">{{metadata_storage_name}}</a></h4>
+                  </div>
+                  <div class="col-2">
+                         <div style="display:{{displayTime}}" data-toggle="tooltip" data-html="true" title="Estimated reading time"><i class='fas fa-clock' style='font-size:14px'></i> {{timeToRead}} minutes</div>
+                  </div>
+                </div>
                 <div class="resultDescription pb-1">{{description}}</div>
                 <span><a style="text-decoration:none !important" href="/DocumentDetails/File/{{metadata_storage_path}}">DOWNLOAD</a></span>
             </div>
@@ -144,6 +164,7 @@
             }
 
                 result.logo = attachLogo(result.metadata_storage_file_extension)
+                result.displayTime = attachTime(result.timeToRead)
 
                 return result;
             });
