@@ -12,11 +12,31 @@
             <h4>Document details</h4>
         </div>
         <div class="col-4">
-            <span><i class='fas fa-clock' style='font-size:14px'></i> @Model.timeToRead minutes</span>
-            <span><i class='fas fa-keyboard pl-2' style='font-size:14px'></i> @Model.wordCount words</span>
-            
+            @if (@Model.timeToRead != null && @Model.timeToRead > 0)
+            {
+                <span><i class='fas fa-clock' style='font-size:14px'></i> @Model.timeToRead minutes</span>
+            }
+            @if (@Model.wordCount != null && @Model.wordCount > 0)
+            {
+                <span><i class='fas fa-keyboard pl-2' style='font-size:14px'></i> @Model.wordCount words</span>
+            }
         </div>
     </div>
+    @if (Model.foundServices != null && Model.foundServices.Count > 0)
+    {
+            <div>
+                @foreach (var service in Model.foundServices)
+                {
+                    <div class="card text-white bg-info mb-3 p-1" style="display:inline-block;font-size:10px;">
+                        <div class="card-body" style="padding: 0.25rem !important">
+                            <p class="card-text">
+                                <strong>@(service)</strong>
+</p>
+                        </div>
+                    </div>
+                }
+            </div>
+    }
     <hr />
     @if (ViewBag.Message != null)
     {
@@ -40,7 +60,6 @@
                 <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new { id = @Model.metadata_storage_path })" />
             </div>
         }
-
         Microsoft.AspNetCore.Html.HtmlString ContentData = FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
         if (ContentData != null && !String.IsNullOrEmpty(ContentData.ToString()))
         {
@@ -74,6 +93,21 @@
                     {
                         <li>
                             @(org)
+                        </li>
+                    }
+                </ul>
+                <hr />
+            </div>
+        }
+        if (Model.organizationsEntities != null && Model.organizationsEntities.Count > 0)
+        {
+            <div>
+                <h5 class="text-primary">Organizations Entities</h5>
+                <ul style="list-style-type:square">
+                    @foreach (var entity in Model.organizationsEntities)
+                    {
+                        <li>
+                            @(entity)
                         </li>
                     }
                 </ul>
