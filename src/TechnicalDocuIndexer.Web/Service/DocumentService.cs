@@ -34,6 +34,7 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
             var document = documentResponse.Value;
 
             document.organizationsEntities = ConvertEntitiesFromString(document.bing_entities);
+            document.bing_entities = null;
             document.StorageUrl = ConvertFromBase64String(document.metadata_storage_path);
 
             return document;
@@ -57,8 +58,8 @@ namespace TechnicalDocuIndexer.Web.Service.Utils
         {
             if (input != null)
             {
-                var escaped = Regex.Unescape(input);
-                List<Entity> entities = JsonConvert.DeserializeObject<List<Entity>>(escaped);
+                //var escaped = Regex.Unescape(input);
+                List<Entity> entities = JsonConvert.DeserializeObject<List<Entity>>(input);
                 return entities.Where(entity => (entity.videos != null && entity.webPages != null)).ToList();
             }
             return new List<Entity>();

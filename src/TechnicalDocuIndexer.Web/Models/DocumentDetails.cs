@@ -15,8 +15,11 @@ namespace TechnicalDocuIndexer.Web.Models
         public List<string> keyphrases { get; set; }
         public List<string> organizations { get; set; }
         public List<string> text { get; set; }
+        public List<string> foundServices { get; set; }
         public List<string> imageTags { get; set; }
         public List<string> layoutText { get; set; }
+        public int wordCount { get; set; }
+        public double timeToRead { get; set; }
         public string merged_content { get; set; }
         public string bing_entities { get; set; }
         public List<Entity> organizationsEntities { get; set; }
