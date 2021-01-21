@@ -7,7 +7,36 @@
 
 
 <div class="container">
-    <h4>Document details</h4>
+    <div class="row">
+        <div class="col-8">
+            <h4>Document details</h4>
+        </div>
+        <div class="col-4">
+            @if (@Model.timeToRead != null && @Model.timeToRead > 0)
+            {
+                <span style="float:right!important;padding-left:10px;"><i class='fas fa-clock' style='font-size:14px'></i> @Model.timeToRead minutes</span>
+            }
+            @if (@Model.wordCount != null && @Model.wordCount > 0)
+            {
+                <span style="float:right!important;padding-left:10px;"><i class='fas fa-keyboard pl-2' style='font-size:14px'></i> @Model.wordCount words</span>
+            }
+        </div>
+    </div>
+    @if (Model.foundServices != null && Model.foundServices.Count > 0)
+    {
+        <div>
+            @foreach (var service in Model.foundServices)
+            {
+                <div class="card text-white bg-info mb-3 p-1" style="display:inline-block;font-size:10px;">
+                    <div class="card-body" style="padding: 0.25rem !important">
+                        <p class="card-text">
+                            <strong>@(service)</strong>
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
     <hr />
     @if (ViewBag.Message != null)
     {
@@ -25,65 +54,186 @@
             FILE: @Model.metadata_storage_name <a type="button" class="btn btn-primary" asp-controller="DocumentDetails" asp-action="File" asp-route-id="@Model.metadata_storage_path">Download</a>
         </h2>
         <hr />
+
         if (@Model.metadata_storage_name.ToUpper().EndsWith(".PNG") || @Model.metadata_storage_name.ToUpper().EndsWith(".JPG"))
         {
             <div>
                 <img style="width:100%;" src="@Url.Action("File", "DocumentDetails", new { id = @Model.metadata_storage_path })" />
             </div>
         }
-
         Microsoft.AspNetCore.Html.HtmlString ContentData = FileDisplayHelper.ParseToHtml(@Model.metadata_storage_file_extension, @Model.merged_content);
         if (ContentData != null && !String.IsNullOrEmpty(ContentData.ToString()))
         {
-            <div>
-                <h5 class="text-primary">Content</h5>
-                @ContentData
-                <hr />
+            <div class="panel-group">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span><a data-toggle="collapse" href="#collapse1" style="text-decoration:none!important;color:black;">Content</a></span>
+                            <span style="float:right!important">
+                                <i class='fas fa-at' style='font-size:20px'></i>
+                                @ContentData.ToString().Length
+                                characters
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div>
+                                @ContentData
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+
         }
         if (Model.keyphrases != null && Model.keyphrases.Count > 0)
         {
-            <div>
-                <h5 class="text-primary">Keyphrases</h5>
-                <ul>
-                    @foreach (var phrase in Model.keyphrases)
-                    {
-                        <li>
-                            @(phrase)
-                        </li>
-                    }
-                </ul>
-                <hr />
+            <div class="panel-group">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span><a data-toggle="collapse" href="#collapse2" style="text-decoration:none!important;color:black;">Keyphrases</a></span>
+                            <span style="float:right!important">
+                                <i class='fas fa-american-sign-language-interpreting' style='font-size:20px'></i>
+                                @Model.keyphrases.Count
+                                keyphrases
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div>
+                                <ul>
+                                    @foreach (var phrase in Model.keyphrases)
+                                    {
+                                        <li>
+                                            @(phrase)
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
         if (Model.organizations != null && Model.organizations.Count > 0)
         {
-            <div>
-                <h5 class="text-primary">Organizations</h5>
-                <ul style="list-style-type:square">
-                    @foreach (var org in Model.organizations)
-                    {
-                        <li>
-                            @(org)
-                        </li>
-                    }
-                </ul>
-                <hr />
+            <div class="panel-group">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span><a data-toggle="collapse" href="#collapse3" style="text-decoration:none!important;color:black;">Organizations</a></span>
+                            <span style="float:right!important">
+                                <i class='fas fa-landmark' style='font-size:20px'></i>
+                                @Model.organizations.Count
+                                organizations
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div>
+                                <ul style="list-style-type:square">
+                                    @foreach (var org in Model.organizations)
+                                    {
+                                        <li>
+                                            @(org)
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        if (Model.organizationsEntities != null && Model.organizationsEntities.Count > 0)
+        {
+            <div class="panel-group">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span><a data-toggle="collapse" href="#collapse4" style="text-decoration:none!important;color:black;">BING Search</a></span>
+                            <span style="float:right!important">
+                                <i class='fas fa-search' style='font-size:20px'></i>
+                                @Model.organizationsEntities.Count
+                                search results
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div>
+                                <ul style="list-style-type:upper-roman">
+                                    @foreach (var entity in Model.organizationsEntities)
+                                    {
+                                        <li class="mb-3">
+                                            <div> <strong>@(entity.videos.Name)</strong></div>
+                                            <div class="mb-2">
+                                                Search: <a href=@(entity.webPages.webSearchUrl)>@(entity.webPages.webSearchUrl)</a>
+                                                <ul style="list-style-type:upper-alpha">
+                                                    @foreach (var searchResult in entity.webPages.value)
+                                                    {
+                                                        <li>
+                                                            <div><strong><a href=@(searchResult.url)>@searchResult.name</a></strong></div>
+                                                            <div>@searchResult.snippet</div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                Video Search: <a href=@(entity.videos.webSearchUrl)>@(entity.videos.webSearchUrl)</a>
+                                                <ul style="list-style-type:upper-alpha">
+                                                    @foreach (var searchResult in entity.videos.value)
+                                                    {
+                                                        <li>
+                                                            <div><strong><a href=@(searchResult.webSearchUrl)>@searchResult.name</a></strong></div>
+                                                            <div>@searchResult.description</div>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
         if (Model.imageTags != null && Model.imageTags.Count > 0)
         {
-            <div>
-                <h5 class="text-primary">Image Tags</h5>
-                <ul style="list-style-type:circle">
-                    @foreach (var tag in Model.imageTags)
-                    {
-                        <li>
-                            @(tag)
-                        </li>
-                    }
-                </ul>
-                <hr />
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <span><a data-toggle="collapse" href="#collapse5" style="text-decoration:none!important;color:white;">Image Tags</a></span>
+                            <span style="float:right!important">
+                                <i class='	fas fa-image' style='font-size:20px'></i>
+                                @Model.imageTags.Count
+                                tags
+                            </span>
+                        </h4>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div>
+                                <ul style="list-style-type:circle">
+                                    @foreach (var tag in Model.imageTags)
+                                    {
+                                        <li>
+                                            @(tag)
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     }
