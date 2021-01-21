@@ -24,18 +24,18 @@
     </div>
     @if (Model.foundServices != null && Model.foundServices.Count > 0)
     {
-            <div>
-                @foreach (var service in Model.foundServices)
-                {
-                    <div class="card text-white bg-info mb-3 p-1" style="display:inline-block;font-size:10px;">
-                        <div class="card-body" style="padding: 0.25rem !important">
-                            <p class="card-text">
-                                <strong>@(service)</strong>
-</p>
-                        </div>
+        <div>
+            @foreach (var service in Model.foundServices)
+            {
+                <div class="card text-white bg-info mb-3 p-1" style="display:inline-block;font-size:10px;">
+                    <div class="card-body" style="padding: 0.25rem !important">
+                        <p class="card-text">
+                            <strong>@(service)</strong>
+                        </p>
                     </div>
-                }
-            </div>
+                </div>
+            }
+        </div>
     }
     <hr />
     @if (ViewBag.Message != null)
@@ -102,12 +102,36 @@
         if (Model.organizationsEntities != null && Model.organizationsEntities.Count > 0)
         {
             <div>
-                <h5 class="text-primary">Organizations Entities</h5>
-                <ul style="list-style-type:square">
+                <h5 class="text-primary">BING Search Organizations Entities</h5>
+                <ul style="list-style-type:upper-roman">
                     @foreach (var entity in Model.organizationsEntities)
                     {
-                        <li>
-                            @(entity)
+                        <li class="mb-3">
+                            <div> <strong>@(entity.videos.Name)</strong></div>
+                            <div class="mb-2">
+                                Search: <a href=@(entity.webPages.webSearchUrl)>@(entity.webPages.webSearchUrl)</a>
+                                <ul style="list-style-type:upper-alpha">
+                                    @foreach (var searchResult in entity.webPages.value)
+                                    {
+                                        <li>
+                                            <div><strong><a href=@(searchResult.url)>@searchResult.name</a></strong></div>
+                                            <div>@searchResult.snippet</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div>
+                                Video Search: <a href=@(entity.videos.webSearchUrl)>@(entity.videos.webSearchUrl)</a>
+                                <ul style="list-style-type:upper-alpha">
+                                    @foreach (var searchResult in entity.videos.value)
+                                    {
+                                        <li>
+                                            <div><strong><a href=@(searchResult.webSearchUrl)>@searchResult.name</a></strong></div>
+                                            <div>@searchResult.description</div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
                         </li>
                     }
                 </ul>
