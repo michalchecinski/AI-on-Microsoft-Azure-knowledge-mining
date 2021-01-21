@@ -7,7 +7,16 @@
 
 
 <div class="container">
-    <h4>Document details</h4>
+    <div class="row">
+        <div class="col-8">
+            <h4>Document details</h4>
+        </div>
+        <div class="col-4">
+            <span><i class='fas fa-clock' style='font-size:14px'></i> @Model.timeToRead minutes</span>
+            <span><i class='fas fa-keyboard pl-2' style='font-size:14px'></i> @Model.wordCount words</span>
+            
+        </div>
+    </div>
     <hr />
     @if (ViewBag.Message != null)
     {
