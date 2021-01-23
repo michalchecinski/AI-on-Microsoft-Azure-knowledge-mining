@@ -67,7 +67,7 @@ The solution uses the following Azure Services:
 - ASP.NET Core MVC
 - jQuery + Bootstrap 
 
-## Reconstructing the solution
+## Reconstructing the solution :construction_worker:
 
 To reconstruct the solution you can follow the steps described in the [How to reconstruct the solution document](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/How to reconstruct the solution.md).
 
