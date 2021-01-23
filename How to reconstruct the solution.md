@@ -1,24 +1,5 @@
 # Reconstruct the solution
 
-
-
-## Functionalities of the system:
-
-- Custom Skill - Bing search for entities
-- Custom Skill - estimated reading time
-- Custom Skill - template recognizing
-- Display documents with immaculate preview of files of type:
-  - png, jpg
-  - markdown
-  - json
-- Searching big datasets of documents
-  - filtering by parameters
-  - paging
-  - display document details
-- Aggregate information regarding files
-- Uploading new documents through the webpage
-- Role Based Access to the system using Auth0
-
 ## Prerequisities
 
 - microsoft account
@@ -191,7 +172,7 @@
 ### Create Index
 
 1. Go to Indexes tab and create a new Index.
-2. After creating new Index, remember to click on it and set **CORS** allowed origin type to **All**.
+2. After creating new Index, remember to click on it and set **CORS** allowed origin type to **Custom** and set the URL of the webapp.
 
 Navigate to https://technicaldocuindexerweb.azurewebsites.net, login using searchreader user and test your app!
 

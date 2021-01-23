@@ -1,6 +1,6 @@
 # Semantive - Knowledge Mining with Cognitive Services
 
-### 1. Skład zespołu
+## The Team :family:
 
 1. Michał Chęciński 
 2. Bartosz Strachowski
@@ -8,54 +8,67 @@
 4. Maciej Wasik
 5. Jakub Rejent
 
-### 2. Use Case :mag:
 
- Pomysły na domenę rozwiązania:
+## Use Case :mag:
 
-- Serwis do zbierania dokumentacji technicznych projektu (Architektura, UseCase, Txt, zdjęcia, prezentacje)
-- Serwis do zbierania dokumentacji prawnej
-- Serwis dla sieci sklepów, który zbiera (umowy, faktury, zlecenia, zatowarowanie)
-- Serwis dla małych i średnich przedsiębiorstw do fakturowania. 
+Service to gather technical documentation for project or whole organization. The documentation includes:
 
-### 3. Proponowane rozwiązanie :artificial_satellite:
+- code
+- scripts
+- presentation
+- project description, READMEs
+- configuration files (eg. ARM templates)
 
-- Strona internetowa z search-boxem. 
+In terms of the file types many filetypes can be used:
 
-- Możliwość dodawania nowych plików. 
+- Markdown
+- json
+- pdf
+- Microsoft Office files (docx, pptx)
 
-- Grupowanie po tagach.  
+## The solution
+### Functionalities of the system :artificial_satellite:
 
-- Możliwość otworzenia preview dokumentu / zdjęcia na stronie.
-- Możliwość dodawania swoich tagów do dokumentu.
+- Custom Skill - Bing search for entities
+- Custom Skill - estimated reading time
+- Custom Skill - template recognizing
+- Display documents with immaculate preview of files of type:
+  - png, jpg
+  - markdown
+  - json
+- Searching big datasets of documents
+  - filtering by parameters
+  - paging
+  - display document details
+- Aggregate information regarding files
+- Uploading new documents through the webpage
+- Role Based Access to the system using Auth0
+- Preview document on the page
 
-### 4. Użyte usługi :desktop_computer:
+### Used Azure services :desktop_computer:
 
-​	Azure Storage Account
+The solution uses the following Azure Services:
 
-​	Azure Cognitive Search
+- Azure Storage Account - to keep files with documentation.
+- Azure Cognitive Search - to create search index on files.
+- Azure WebApp - to access search and upload functionality.
+- Azure Functions - to host custom skills for the Azure Search Indexer.
+- Azure Cognitive Services - to extract additional data for text and images, also another Cognitive Service is used to get data from Bing WebSearch for one of the custom skills.
 
-​	Azure WebApp
-
-​	Azure Functions
-
-​	Azure Text Anaytics
-
-​	Azure Sql Server?
-
-### 5. Architektura :world_map:
+### Cloud architecture :world_map:
 
 ![image](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/images/arch_semantive_azure.png?raw=true)
 
 
 
-### 6. Stos technologiczny :hammer_and_wrench:
+### Technical stack :hammer_and_wrench:
 
-​	Azure Cloud
+- Microsoft Azure
+- ASP.NET Core MVC
+- jQuery + Bootstrap 
 
-​	ASP.NET Core MVC
+## Reconstructing the solution
 
-​	jQuery + Bootstrap 
-
-
+To reconstruct the solution you can follow the steps described in the [How to reconstruct the solution document](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/How to reconstruct the solution.md).
 
 
