@@ -1,11 +1,10 @@
 # Reconstruct the solution
 
-[TOC]
+
 
 ## Functionalities of the system:
 
-- End-to-End application for searching and displaying documents
-- Custom Skill - Bing search
+- Custom Skill - Bing search for entities
 - Custom Skill - estimated reading time
 - Custom Skill - template recognizing
 - Display all documents with immaculate preview of files of type:
@@ -41,7 +40,7 @@
 
    - Go to *APIs* subpage and copy API IDENTIFIER
 
-     ![audience](C:\Users\Z6MVM\Desktop\graphics\audience.PNG)
+     ![audience](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/images/audience.PNG?raw=true)
 
 4. Go back to settings subpage, scroll down to **Allowed Callback URLs** and paste there following values:
 
@@ -99,7 +98,7 @@
 
 1. Go to [Azure DevOps](https://dev.azure.com/) portal, log in using your Microsoft account and create a new project.
 2. Decide whether your code will be hosted in Github or Azure Repos - we assume the code will be in Azure Repos.
-3. Click on ![Repos](C:\Users\Z6MVM\Desktop\graphics\Repos.PNG) tab and create a new repository.
+3. Click on ![Repos](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/images/Repos.PNG?raw=true) tab and create a new repository.
 4. In newly created repository cloned [Azure Knowledge mining repository]([michalchecinski/AI-on-Microsoft-Azure-knowledge-mining (github.com)](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining)) and push it to master branch.
 5. Next, go to *Pipelines* and create a new variable group *tdi-base* in your repository.
 6. Fill up variables:
