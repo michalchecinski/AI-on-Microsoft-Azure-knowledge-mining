@@ -7,12 +7,16 @@
 - Custom Skill - Bing search for entities
 - Custom Skill - estimated reading time
 - Custom Skill - template recognizing
-- Display all documents with immaculate preview of files of type:
+- Display documents with immaculate preview of files of type:
   - png, jpg
   - markdown
   - json
-- Searching big datasets of documents.
-- Uploading new documents through webpage
+- Searching big datasets of documents
+  - filtering by parameters
+  - paging
+  - display document details
+- Aggregate information regarding files
+- Uploading new documents through the webpage
 - Role Based Access to the system using Auth0
 
 ## Prerequisities
