@@ -30,7 +30,7 @@
 
 ### Auth0
 
-1. Go to [Auth0]([Auth0: Secure access for everyone. But not just anyone.](https://auth0.com/)) website. If you do not have an account, sign up. You can log in using your microsoft account also
+1. Go to [Auth0](https://auth0.com/) website. If you do not have an account, sign up. You can log in using your microsoft account also
 
 2. Create a **Machine To Machine application**. Name it *technicaldocuindexer*.
 
@@ -87,7 +87,7 @@
 
 ### Azure portal 
 
-1. Log in to [Azure portal]([Home - Microsoft Azure](https://portal.azure.com/#home)) and create a new resource group.
+1. Log in to [Azure portal](https://portal.azure.com/#home) and create a new resource group.
 2. Create Function App resource "**TDICustomSkills**" , where we will store our serverless functions (custom skills).
 3. Create an Azure Cognitive Search Resource and name it *cogni-technical-docu-indexer01*.
 4. In newly created resource, create a new index.
@@ -103,7 +103,7 @@
 1. Go to [Azure DevOps](https://dev.azure.com/) portal, log in using your Microsoft account and create a new project.
 2. Decide whether your code will be hosted in Github or Azure Repos - we assume the code will be in Azure Repos.
 3. Click on ![Repos](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining/blob/master/images/Repos.PNG?raw=true) tab and create a new repository.
-4. In newly created repository cloned [Azure Knowledge mining repository]([michalchecinski/AI-on-Microsoft-Azure-knowledge-mining (github.com)](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining)) and push it to master branch.
+4. In newly created repository cloned [Azure Knowledge mining repository](https://github.com/michalchecinski/AI-on-Microsoft-Azure-knowledge-mining) and push it to master branch.
 5. Next, go to *Pipelines* and create a new variable group *tdi-base* in your repository.
 6. Fill up variables:
    - Auth0Settings.Audience - API Identifier
