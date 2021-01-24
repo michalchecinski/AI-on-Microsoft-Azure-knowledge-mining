@@ -1,5 +1,7 @@
 # Semantive - Knowledge Mining with Cognitive Services
 
+Demo: https://www.youtube.com/watch?v=BqSz9rU009Y
+
 ## The Team :family:
 
 1. Michał Chęciński 
