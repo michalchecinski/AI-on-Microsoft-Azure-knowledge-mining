@@ -3,16 +3,22 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverfarms_ASP_techdocuindexer_name": {
-            "value": "ASP-techdocuindexer"
+            "value": "plan-tdi-web01"
         },
         "sites_TechnicalDocuIndexerWeb_name": {
             "value": "TechnicalDocuIndexerWeb"
         },
         "components_TechnicalDocuIndexerWeb_name": {
-            "value": "TechnicalDocuIndexerWeb"
+            "value": "appi-tdi-web01"
         },
         "storageAccountName": {
-            "value": "sttechnicaldocuindexer"
+            "value": "sttdifiles01"
+        },
+        "functionAppName": {
+            "value": "func-tdi-custom-skills"
+        },
+        "functionsStorageAccountName": {
+            "value": "stfunctdicustomskills"
         }
     }
 }

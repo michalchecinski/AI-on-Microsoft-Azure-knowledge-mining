@@ -3,7 +3,7 @@
 
 using System.Collections.Generic;
 
-namespace AzureCognitiveSearch.PowerSkills.Common
+namespace TechnicalDocuIndexer.Functions
 {
     public class WebApiSkillRequest
     {

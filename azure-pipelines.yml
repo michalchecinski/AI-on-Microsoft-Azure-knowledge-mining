@@ -7,7 +7,7 @@ trigger:
     exclude:
     - README.md
     - images/*
-    
+
 pr: none
 
 pool:
@@ -42,8 +42,21 @@ stages:
           msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
-      - publish: $(Build.artifactStagingDirectory)
-        artifact: drop
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/webapp'
+      - publish: $(build.artifactstagingdirectory)/webapp
+        artifact: webapp
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: '**/TechnicalDocuIndexer.Functions.csproj'
+          arguments: '--output $(Build.BinariesDirectory)/functions --configuration Release'
+      - publish: $(build.artifactstagingdirectory)/functions
+        artifact: functions
   - job: Test
     dependsOn: Build
     displayName: Run Tests
@@ -53,7 +66,7 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
   - job: publishArmArtifact
-    dependsOn: 
+    dependsOn:
       - Build
       - Test
     displayName: Publish ARM artifact
@@ -61,7 +74,7 @@ stages:
       - publish: $(System.DefaultWorkingDirectory)/infrastructure
         artifact: ARMTemplate
 
-- stage: DeployAzureWebapp
+- stage: DeployAzureResources
   dependsOn: Build
   displayName: Deploy Azure Web App Resource
   jobs:
@@ -90,7 +103,7 @@ stages:
                     overrideParameters: -Auth0SettingsAudience $(Auth0Settings.Audience) -Auth0SettingsClientId $(Auth0Settings.ClientId) -Auth0SettingsClientSecret $(Auth0Settings.ClientSecret) -Auth0SettingsDomain $(Auth0Settings.Domain) -searchServiceName $(Search.Service) -SearchAPIKey $(Search.APIKey) -SearchIndexName $(Search.IndexName) -SearchQueryKey $(Search.QueryKey)
 
 - stage: DeploySolution
-  dependsOn: DeployAzureWebapp
+  dependsOn: DeployAzureResources
   displayName: Deploy solution
   jobs:
     - deployment: solution
@@ -100,13 +113,23 @@ stages:
           deploy:
             steps:
               - download: current
-                artifact: drop
+                artifact: webapp
               - task: AzureRmWebAppDeployment@4
                 inputs:
                   ConnectionType: 'AzureRM'
                   azureSubscription: $(Azure.Resource.Manager.Connection)
                   appType: 'webApp'
                   WebAppName: 'TechnicalDocuIndexerWeb'
-                  packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
-                   
+                  packageForLinux: '$(Pipeline.Workspace)/webapp/*.zip'
+              - download: current
+                artifact: functions
+              - task: AzureFunctionApp@1
+                inputs:
+                  azureSubscription: $(Azure.Resource.Manager.Connection)
+                  appType: 'functionApp'
+                  appName: 'func-tdi-custom-skills'
+                  package: '$(Pipeline.Workspace)/functions/*.zip'
+                  deploymentMethod: 'auto'              
+              
+
 
