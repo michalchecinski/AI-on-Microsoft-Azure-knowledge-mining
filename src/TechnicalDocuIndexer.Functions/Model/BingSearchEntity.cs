@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BingSearch.Model
+﻿namespace TechnicalDocuIndexer.Functions.Model
 {
     class BingSearchEntity
     {

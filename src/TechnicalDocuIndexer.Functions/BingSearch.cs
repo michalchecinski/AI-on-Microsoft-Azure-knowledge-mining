@@ -1,30 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using BingSearch.Model;
+using TechnicalDocuIndexer.Functions.Model;
 
-namespace BingSearch
+namespace TechnicalDocuIndexer.Functions
 {
 
     public static class BingSearch
     {
 
-        static readonly string bingEntityApiEndpoint = "https://api.bing.microsoft.com/v7.0/entities/";
-        static readonly string bingSearchApiEndpoint = "https://api.bing.microsoft.com/v7.0/search";
-        static readonly string key = "<BING-API-KEY>";
+        static readonly string BingEntityApiEndpoint = "https://api.bing.microsoft.com/v7.0/entities/";
+        private const string BingSearchApiEndpoint = "https://api.bing.microsoft.com/v7.0/search";
+        private const string Key = "<BING-API-KEY>";
 
 
         [FunctionName("entity-search")]
-        public static async Task<IActionResult> EntitySearch(
+        public static IActionResult EntitySearch(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
@@ -73,16 +72,16 @@ namespace BingSearch
             return new OkObjectResult(response);
         }
 
-        private async static Task<OutputRecord.OutputRecordData> FetchEntityMetadata(string entityName)
+        private static async Task<OutputRecord.OutputRecordData> FetchEntityMetadata(string entityName)
         {
-            var uriSearch = bingSearchApiEndpoint + "?q=" + entityName + "&mkt=en-us&count=1&answerCount=1&promote=images%2Cvideos";
+            var uriSearch = BingSearchApiEndpoint + "?q=" + entityName + "&mkt=en-us&count=1&answerCount=1&promote=images%2Cvideos";
             var result = new OutputRecord.OutputRecordData();
 
             var client = new HttpClient();
             var request = new HttpRequestMessage();
 
             request.Method = HttpMethod.Get;
-            request.Headers.Add("Ocp-Apim-Subscription-Key", key);
+            request.Headers.Add("Ocp-Apim-Subscription-Key", Key);
 
             request.RequestUri = new Uri(uriSearch);
             HttpResponseMessage responseSearch = await client.SendAsync(request);

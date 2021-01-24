@@ -7,7 +7,7 @@ trigger:
     exclude:
     - README.md
     - images/*
-    
+
 pr: none
 
 pool:
@@ -53,7 +53,7 @@ stages:
           platform: '$(buildPlatform)'
           configuration: '$(buildConfiguration)'
   - job: publishArmArtifact
-    dependsOn: 
+    dependsOn:
       - Build
       - Test
     displayName: Publish ARM artifact
@@ -61,7 +61,7 @@ stages:
       - publish: $(System.DefaultWorkingDirectory)/infrastructure
         artifact: ARMTemplate
 
-- stage: DeployAzureWebapp
+- stage: DeployAzureResources
   dependsOn: Build
   displayName: Deploy Azure Web App Resource
   jobs:
@@ -90,7 +90,7 @@ stages:
                     overrideParameters: -Auth0SettingsAudience $(Auth0Settings.Audience) -Auth0SettingsClientId $(Auth0Settings.ClientId) -Auth0SettingsClientSecret $(Auth0Settings.ClientSecret) -Auth0SettingsDomain $(Auth0Settings.Domain) -searchServiceName $(Search.Service) -SearchAPIKey $(Search.APIKey) -SearchIndexName $(Search.IndexName) -SearchQueryKey $(Search.QueryKey)
 
 - stage: DeploySolution
-  dependsOn: DeployAzureWebapp
+  dependsOn: DeployAzureResources
   displayName: Deploy solution
   jobs:
     - deployment: solution
@@ -108,5 +108,5 @@ stages:
                   appType: 'webApp'
                   WebAppName: 'TechnicalDocuIndexerWeb'
                   packageForLinux: '$(Pipeline.Workspace)/drop/*.zip'
-                   
+
 
